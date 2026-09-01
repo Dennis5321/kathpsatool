@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KATH Hospital Map — Patient Self-Assessment Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="icon" href="kath-logo.jpg" />
+</head>
+<body>
+
+  <div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content welcome-modal-box">
+      <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
+      <div class="modal-header">
+        <span class="modal-icon">👋</span>
+        <h2>Welcome to KATH</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Komfo Anokye Teaching Hospital</strong></p>
+        <p>Use the map below to locate gateways, service areas, and general campus points around KATH. Location access is optional and only used with your permission.</p>
+        <div class="welcome-features">
+          <div class="feature">
+            <span class="feature-icon">🗺️</span>
+            <span class="feature-text"><strong>Campus Map:</strong> View KATH area and key service points</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">📍</span>
+            <span class="feature-text"><strong>Find your way:</strong> Search and get outdoor directions</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">⚠️</span>
+            <span class="feature-text"><strong>Important:</strong> This is for general navigation, not exact indoor turn-by-turn routing.</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close-btn-footer">Got it, thanks</button>
+        <a href="bmi.html" class="btn btn-primary">Start Assessment →</a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="datetime-weather-widget">
+      <div class="widget-content">
+        <div class="datetime-display">
+          <div class="time-display" id="time-display">--:--</div>
+          <div class="date-display" id="date-display">Loading...</div>
+        </div>
+        <div class="weather-display" id="weather-display">
+          <span class="weather-temp">--°C</span>
+          <span class="weather-icon">🌤️</span>
+          <span class="weather-desc">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="kath-logo.jpg" alt="Komfo Anokye Teaching Hospital Logo" class="header-logo" />
+        <div class="header-text">
+          <h1>Komfo Anokye Teaching Hospital</h1>
+          <p>Patient Self-Assessment Tool &bull; Kumasi, Ghana</p>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn" type="button" aria-expanded="false">
+            <span class="menu-icon">☰</span>
+            <span>Menu &amp; Assessment Navigation</span>
+            <span class="menu-arrow">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html" class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <div class="nav-text">
+                <strong>Home</strong>
+                <small>Landing page &amp; overview</small>
+              </div>
+            </a>
+
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">📋 Patient Self-Assessment</div>
+
+            <a href="bmi.html" class="nav-item">
+              <span class="nav-icon">⚖️</span>
+              <div class="nav-text">
+                <strong>Step 1: BMI Calculator</strong>
+                <small>Enter height, weight &amp; metrics</small>
+              </div>
+            </a>
+            <a href="symptoms.html" class="nav-item">
+              <span class="nav-icon">🩺</span>
+              <div class="nav-text">
+                <strong>Step 2: Symptom Checker</strong>
+                <small>Select experienced symptoms</small>
+              </div>
+            </a>
+            <a href="results.html" class="nav-item">
+              <span class="nav-icon">📊</span>
+              <div class="nav-text">
+                <strong>Step 3: View Results</strong>
+                <small>BMI reading &amp; KATH directorate</small>
+              </div>
+            </a>
+
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">🏥 Hospital &amp; Feedback</div>
+
+            <a href="about.html" class="nav-item">
+              <span class="nav-icon">ℹ️</span>
+              <div class="nav-text">
+                <strong>About KATH</strong>
+                <small>History, mission &amp; clinical services</small>
+              </div>
+            </a>
+            <a href="map.html" class="nav-item active">
+              <span class="nav-icon">🗺️</span>
+              <div class="nav-text">
+                <strong>KATH Hospital Map</strong>
+                <small>Find your way around campus</small>
+              </div>
+            </a>
+            <a href="feedback.html" class="nav-item">
+              <span class="nav-icon">💬</span>
+              <div class="nav-text">
+                <strong>Patient Feedback</strong>
+                <small>Share comments &amp; ratings</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="card">
+        <div class="card-title">🗺️ KATH Hospital Map &amp; Navigation</div>
+        <p class="card-subtitle">
+          This map provides general outdoor navigation around the KATH campus area. It is intended to help patients locate key hospital service points and access routes. Location permission is optional and only used when you choose to share your current position.
+        </p>
+
+        <div class="map-toolbar">
+          <div class="map-search-wrap">
+            <label for="facility-search">Search hospital facilities</label>
+            <input type="text" id="facility-search" placeholder="Search a clinic, ward, directorate, or service area" />
+          </div>
+
+          <div class="map-actions">
+            <button id="use-location-btn" class="btn btn-primary" type="button">📍 My Location</button>
+            <button id="share-location-btn" class="btn btn-secondary" type="button">📤 Share My Location</button>
+            <button id="center-user-btn" class="btn btn-secondary" type="button">🎯 Recenter</button>
+          </div>
+        </div>
+
+        <div class="map-layout">
+          <div class="map-panel">
+            <div id="kath-map" aria-label="Map of Komfo Anokye Teaching Hospital area"></div>
+          </div>
+
+          <aside class="map-sidebar">
+            <div class="map-panel">
+              <div class="map-select-wrap">
+                <label for="destination-select">Get directions to</label>
+                <select id="destination-select">
+                  <option value="">Select a destination</option>
+                </select>
+              </div>
+              <div class="map-actions" style="margin-top:1rem;">
+                <button id="get-directions-btn" type="button" class="btn btn-primary btn-block">🚶 Get Directions</button>
+              </div>
+              <div id="location-status" class="map-status">
+                Location access is optional. Use “My Location” to show your GPS position and receive direction options when you grant permission.
+              </div>
+            </div>
+
+            <div class="map-panel directions-panel" id="directions-panel">
+              <h4>Directions</h4>
+              <p style="margin:0; color:var(--text-muted);">Choose a destination and tap “Get Directions” to view walking directions from your current location.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <div class="disclaimer-title">⚠️ Navigation Disclaimer</div>
+        <p>
+          This map offers general outdoor navigation and guide information around the KATH campus area. It does not replace a complete indoor KATH building map or official turn-by-turn navigation. If you are in a medical emergency or need immediate assistance, follow hospital staff guidance and seek urgent professional care.
+        </p>
+      </div>
+
+      <div class="disclaimer">
+        <div class="disclaimer-title">🚨 Medical Disclaimer</div>
+        <p>
+          This self-assessment tool is not a substitute for professional medical diagnosis or treatment. If symptoms seem severe or urgent, please seek appropriate medical care immediately.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      <strong>Komfo Anokye Teaching Hospital</strong> &mdash; Kumasi, Ghana &nbsp;|&nbsp;
+      🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp; Student Mini Project &copy; 2024
+    </p>
+    <p style="margin-top:.3rem;font-size:.76rem;">
+      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+    </p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="script.js"></script>
+
+  <script>
+    (function() {
+      function updateDateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeDisplay = document.getElementById('time-display');
+        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes}`;
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const dateStr = now.toLocaleDateString('en-US', options);
+        const dateDisplay = document.getElementById('date-display');
+        if (dateDisplay) dateDisplay.textContent = dateStr;
+      }
+      function getWeatherIcon(code, isDay) {
+        if (code === 0) return isDay ? '☀️' : '🌙';
+        if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️';
+        if (code === 3) return '☁️';
+        if (code === 45 || code === 48) return '🌫️';
+        if (code >= 51 && code <= 67) return '🌧️';
+        if (code >= 71 && code <= 86) return '❄️';
+        if (code >= 80 && code <= 82) return '🌦️';
+        if (code >= 95 && code <= 99) return '⛈️';
+        return '🌤️';
+      }
+      function getWeatherDescription(code) {
+        const descriptions = {0: 'Clear', 1: 'Cloudy', 2: 'Cloudy', 3: 'Overcast', 45: 'Foggy', 48: 'Foggy', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Rainy', 63: 'Rainy', 65: 'Rainy', 71: 'Snowy', 73: 'Snowy', 75: 'Snowy', 77: 'Snow', 80: 'Showers', 81: 'Showers', 82: 'Showers', 85: 'Snow', 86: 'Snow', 95: 'Stormy', 96: 'Stormy', 99: 'Stormy'};
+        return descriptions[code] || 'Check weather';
+      }
+      function getWeatherData(lat, lon) {
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,weather_code&timezone=auto')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            const current = data.current || {};
+            const weatherCode = current.weather_code || 0;
+            const temperature = Math.round(current.temperature_2m || 0);
+            const weatherDisplay = document.getElementById('weather-display');
+            if (weatherDisplay) {
+              weatherDisplay.innerHTML = '<span class="weather-temp">' + temperature + '°C</span><span class="weather-icon">' + getWeatherIcon(weatherCode, true) + '</span><span class="weather-desc">' + getWeatherDescription(weatherCode) + '</span>';
+            }
+          })
+          .catch(function () {
+            const weatherDisplay = document.getElementById('weather-display');
+            if (weatherDisplay) weatherDisplay.innerHTML = '<span class="weather-temp">--°C</span><span class="weather-icon">🌤️</span><span class="weather-desc">Weather</span>';
+          });
+      }
+      function fetchWeather() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (pos) {
+            getWeatherData(pos.coords.latitude, pos.coords.longitude);
+          }, function () {
+            getWeatherData(6.7000, -1.6168);
+          }, { timeout: 5000 });
+        } else {
+          getWeatherData(6.7000, -1.6168);
+        }
+      }
+      updateDateTime();
+      fetchWeather();
+      setInterval(updateDateTime, 60000);
+    })();
+  </script>
+</body>
+</html>

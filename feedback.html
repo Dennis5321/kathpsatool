@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback — KATH Self-Assessment Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="kath-logo.jpg" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════
+       WELCOME POPUP MODAL
+       ═══════════════════════════════ -->
+  <div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content welcome-modal-box">
+      <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
+      <div class="modal-header">
+        <span class="modal-icon">👋</span>
+        <h2>Welcome to KATH</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Komfo Anokye Teaching Hospital</strong></p>
+        <p>Thank you for using our Patient Self-Assessment Tool. This quick and easy assessment will help us understand your health status and direct you to the appropriate hospital department for consultation.</p>
+        <div class="welcome-features">
+          <div class="feature">
+            <span class="feature-icon">⚖️</span>
+            <span class="feature-text"><strong>BMI Calculator:</strong> Assess your body mass index</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🩺</span>
+            <span class="feature-text"><strong>Symptom Checker:</strong> Report your symptoms</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">📊</span>
+            <span class="feature-text"><strong>Results:</strong> Get department recommendations</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close-btn-footer">Got it, thanks</button>
+        <a href="bmi.html" class="btn btn-primary">Start Assessment →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header>
+    <!-- Date, Time & Weather Widget -->
+    <div class="datetime-weather-widget">
+      <div class="widget-content">
+        <div class="datetime-display">
+          <div class="time-display" id="time-display">--:--</div>
+          <div class="date-display" id="date-display">Loading...</div>
+        </div>
+        <div class="weather-display" id="weather-display">
+          <span class="weather-temp">--°C</span>
+          <span class="weather-icon">🌤️</span>
+          <span class="weather-desc">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="kath-logo.jpg" alt="Komfo Anokye Teaching Hospital Logo" class="header-logo" />
+        <div class="header-text">
+          <h1>Komfo Anokye Teaching Hospital</h1>
+          <p>Patient Self-Assessment Tool &bull; Kumasi, Ghana</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Centered Main Dropdown Navigation ── -->
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn" type="button" aria-expanded="false">
+            <span class="menu-icon">☰</span>
+            <span>Menu &amp; Assessment Navigation</span>
+            <span class="menu-arrow">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html" class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <div class="nav-text">
+                <strong>Home</strong>
+                <small>Landing page &amp; overview</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">📋 Patient Self-Assessment</div>
+            
+            <a href="bmi.html" class="nav-item">
+              <span class="nav-icon">⚖️</span>
+              <div class="nav-text">
+                <strong>Step 1: BMI Calculator</strong>
+                <small>Enter height, weight &amp; metrics</small>
+              </div>
+            </a>
+            <a href="symptoms.html" class="nav-item">
+              <span class="nav-icon">🩺</span>
+              <div class="nav-text">
+                <strong>Step 2: Symptom Checker</strong>
+                <small>Select experienced symptoms</small>
+              </div>
+            </a>
+            <a href="results.html" class="nav-item">
+              <span class="nav-icon">📊</span>
+              <div class="nav-text">
+                <strong>Step 3: View Results</strong>
+                <small>BMI reading &amp; KATH directorate</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">🏥 Hospital &amp; Feedback</div>
+            
+            <a href="about.html" class="nav-item">
+              <span class="nav-icon">ℹ️</span>
+              <div class="nav-text">
+                <strong>About KATH</strong>
+                <small>History, mission &amp; clinical services</small>
+              </div>
+            </a>
+            <a href="feedback.html" class="nav-item active">
+              <span class="nav-icon">💬</span>
+              <div class="nav-text">
+                <strong>Patient Feedback</strong>
+                <small>Share comments &amp; ratings</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main>
+    <div class="container">
+
+      <!-- Page heading -->
+      <div style="text-align:center;padding:1rem 0 2rem;">
+        <span style="font-size:3.5rem;">💬</span>
+        <h2 style="color:var(--primary);font-size:2rem;font-weight:800;margin-top:.4rem;">Share Your Experience</h2>
+        <p style="color:var(--text-mid);font-size:1.05rem;margin-top:.4rem;max-width:650px;margin-left:auto;margin-right:auto;line-height:1.6;">
+          Your feedback helps KATH and our development team enhance this digital tool for all patients and visitors.
+        </p>
+      </div>
+
+      <!-- Full-Width 2-Column Layout -->
+      <div class="grid-2col-wide-left">
+
+        <!-- Column 1: Feedback Form -->
+        <div class="card">
+          <div class="card-title">📝 Feedback Form</div>
+          <p class="card-subtitle">
+            Please take a moment to rate your experience and provide any recommendations.
+          </p>
+
+          <!-- Success message (hidden until form submitted) -->
+          <div class="feedback-success" id="feedback-success">
+            <span class="icon">🎉</span>
+            <h3>Thank You for Your Feedback!</h3>
+            <p>
+              Your response has been recorded. We appreciate your time and will use your
+              input to make this tool better for all KATH patients.
+            </p>
+            <a href="index.html" class="btn btn-primary mt-2">🏠 Back to Home</a>
+          </div>
+
+          <!-- The actual feedback form -->
+          <form id="feedback-form" novalidate>
+
+            <!-- Visitor type -->
+            <div class="form-group">
+              <label for="visitor-type">
+                <span class="emoji-label">👤</span> I am a…
+              </label>
+              <select id="visitor-type" name="visitor-type" required>
+                <option value="">— Select —</option>
+                <option value="patient">Patient</option>
+                <option value="caregiver">Caregiver / Family member</option>
+                <option value="student">Student</option>
+                <option value="staff">KATH Staff</option>
+                <option value="visitor">General Visitor</option>
+              </select>
+            </div>
+
+            <!-- Patient Name -->
+            <div class="form-group">
+              <label for="patient-name">
+                <span class="emoji-label">🧑‍⚕️</span> Patient name
+              </label>
+              <input
+                type="text"
+                id="patient-name"
+                name="patient-name"
+                placeholder="e.g. Ama Boateng"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <!-- Star Rating -->
+            <div class="form-group">
+              <label>⭐ How would you rate this tool?</label>
+              <div class="star-rating">
+                <span class="star" data-value="1" title="Poor">★</span>
+                <span class="star" data-value="2" title="Fair">★</span>
+                <span class="star" data-value="3" title="Good">★</span>
+                <span class="star" data-value="4" title="Very Good">★</span>
+                <span class="star" data-value="5" title="Excellent">★</span>
+              </div>
+              <span class="hint">Click a star to rate (1 = Poor, 5 = Excellent)</span>
+            </div>
+
+            <!-- What they liked -->
+            <div class="form-group">
+              <label for="liked">
+                <span class="emoji-label">👍</span> What did you like about this tool?
+              </label>
+              <textarea
+                id="liked"
+                name="liked"
+                placeholder="e.g. Easy to use, helpful directorate suggestions, clear results…"
+              ></textarea>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="form-group">
+              <label for="suggestions">
+                <span class="emoji-label">💡</span> Any suggestions for improvement?
+              </label>
+              <textarea
+                id="suggestions"
+                name="suggestions"
+                placeholder="e.g. Add more symptoms, include a pharmacy section…"
+              ></textarea>
+            </div>
+
+            <!-- Comments about KATH services -->
+            <div class="form-group">
+              <label for="comments">
+                <span class="emoji-label">🏥</span> Comments about KATH services (optional)
+              </label>
+              <textarea
+                id="comments"
+                name="comments"
+                placeholder="Share your general experience at Komfo Anokye Teaching Hospital…"
+              ></textarea>
+            </div>
+
+            <!-- Would recommend -->
+            <div class="form-group">
+              <label>
+                <span class="emoji-label">🔁</span> Would you recommend this tool to others?
+              </label>
+              <div style="display:flex;gap:1.5rem;margin-top:.4rem;flex-wrap:wrap;">
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer;">
+                  <input type="radio" name="recommend" value="yes" style="accent-color:var(--primary);width:1.2rem;height:1.2rem;" />
+                  👍 Yes, definitely
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer;">
+                  <input type="radio" name="recommend" value="maybe" style="accent-color:var(--primary);width:1.2rem;height:1.2rem;" />
+                  🤔 Maybe
+                </label>
+                <label style="display:flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer;">
+                  <input type="radio" name="recommend" value="no" style="accent-color:var(--primary);width:1.2rem;height:1.2rem;" />
+                  👎 No
+                </label>
+              </div>
+            </div>
+
+            <!-- Privacy note -->
+            <p style="font-size:.82rem;color:var(--text-muted);background:#fffafa;padding:.8rem 1rem;border-radius:var(--radius-sm);margin-bottom:1.2rem;border:1.5px solid var(--border);">
+              🔒 <strong>Privacy notice:</strong> No personal medical records or identifiable information are stored. Feedback is completely anonymous.
+            </p>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              📨 Submit Feedback
+            </button>
+
+          </form>
+        </div><!-- /card (left) -->
+
+        <!-- Column 2: Side Cards (Why Feedback Matters & Help) -->
+        <div>
+
+          <div class="card">
+            <div class="card-title">🌟 Why Your Voice Matters</div>
+            <p style="color:var(--text-mid);font-size:.92rem;line-height:1.65;margin-bottom:1rem;">
+              Komfo Anokye Teaching Hospital strives for continuous clinical excellence and patient satisfaction. By sharing your feedback:
+            </p>
+            <ul style="padding-left:1.2rem;color:var(--text-mid);font-size:.9rem;line-height:1.7;">
+              <li>You help streamline the pre-consultation OPD flow.</li>
+              <li>You aid students and developers in refining diagnostic routing.</li>
+              <li>You assist in improving overall hospital guidance services.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📞 Need Direct Assistance?</div>
+            <p style="color:var(--text-mid);font-size:.9rem;line-height:1.6;margin-bottom:1rem;">
+              If you have urgent inquiries regarding appointments, admissions, or patient care:
+            </p>
+            <div style="background:#fff8f8;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem;">
+              <p style="font-weight:700;color:var(--primary);">🏥 KATH Main Helpdesk</p>
+              <p style="color:var(--text-mid);font-size:.9rem;margin-top:.2rem;">Phone: <a href="tel:+233322022301" style="color:var(--primary);font-weight:700;">+233 32 202 2301</a></p>
+              <p style="color:var(--text-muted);font-size:.82rem;margin-top:.2rem;">Bantama Road, Kumasi, Ghana</p>
+            </div>
+          </div>
+
+        </div><!-- /column 2 -->
+
+      </div><!-- /grid-2col-wide-left -->
+
+    </div><!-- /container -->
+  </main>
+
+  <footer>
+    <p>
+      <strong>Komfo Anokye Teaching Hospital</strong> &mdash; Kumasi, Ghana &nbsp;|&nbsp;
+      🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp; Student Mini Project &copy; 2024
+    </p>
+    <p style="margin-top:.3rem;font-size:.76rem;">
+      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+  
+  <!-- Initialize Date/Time/Weather immediately -->
+  <script>
+    (function() {
+      function updateDateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeDisplay = document.getElementById('time-display');
+        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes}`;
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const dateStr = now.toLocaleDateString('en-US', options);
+        const dateDisplay = document.getElementById('date-display');
+        if (dateDisplay) dateDisplay.textContent = dateStr;
+      }
+      function getWeatherIcon(code, isDay) {
+        if (code === 0) return isDay ? '☀️' : '🌙';
+        if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️';
+        if (code === 3) return '☁️';
+        if (code === 45 || code === 48) return '🌫️';
+        if (code >= 51 && code <= 67) return '🌧️';
+        if (code >= 71 && code <= 86) return '❄️';
+        if (code >= 80 && code <= 82) return '🌦️';
+        if (code >= 95 && code <= 99) return '⛈️';
+        return '🌤️';
+      }
+      function getWeatherDescription(code) {
+        const descriptions = {0: 'Clear', 1: 'Cloudy', 2: 'Cloudy', 3: 'Overcast', 45: 'Foggy', 48: 'Foggy', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Rainy', 63: 'Rainy', 65: 'Rainy', 71: 'Snowy', 73: 'Snowy', 75: 'Snowy', 77: 'Snow', 80: 'Showers', 81: 'Showers', 82: 'Showers', 85: 'Snow', 86: 'Snow', 95: 'Stormy', 96: 'Stormy', 99: 'Stormy'};
+        return descriptions[code] || 'Check weather';
+      }
+      function fetchWeather() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(pos) { getWeatherData(pos.coords.latitude, pos.coords.longitude); }, function() { getWeatherData(6.627, -1.616); }, { timeout: 5000 });
+        } else { getWeatherData(6.627, -1.616); }
+      }
+      function getWeatherData(lat, lon) {
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&timezone=auto`)
+          .then(r => r.json())
+          .then(data => {
+            const c = data.current;
+            const temp = Math.round(c.temperature_2m);
+            const icon = getWeatherIcon(c.weather_code, c.is_day === 1);
+            const desc = getWeatherDescription(c.weather_code);
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = `<span class="weather-temp">${temp}°C</span><span class="weather-icon">${icon}</span><span class="weather-desc">${desc}</span>`;
+          })
+          .catch(() => {
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = '<span class="weather-temp">--°C</span><span class="weather-icon">🌍</span><span class="weather-desc">Weather unavailable</span>';
+          });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function() { updateDateTime(); setInterval(updateDateTime, 60000); fetchWeather(); setInterval(fetchWeather, 1800000); }); } else { updateDateTime(); fetchWeather(); }
+    })();
+  </script>
+</body>
+</html>

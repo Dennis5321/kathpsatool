@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KATH Patient Self-Assessment Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="kath-logo.jpg" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       WELCOME POPUP MODAL
+       ═══════════════════════════════════════════ -->
+  <div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content welcome-modal-box">
+      <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
+      <div class="modal-header">
+        <span class="modal-icon">👋</span>
+        <h2>Welcome to KATH</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Komfo Anokye Teaching Hospital</strong></p>
+        <p>Thank you for using our Patient Self-Assessment Tool. This quick and easy assessment will help us understand your health status and direct you to the appropriate hospital department for consultation.</p>
+        <div class="welcome-features">
+          <div class="feature">
+            <span class="feature-icon">⚖️</span>
+            <span class="feature-text"><strong>BMI Calculator:</strong> Assess your body mass index</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🩺</span>
+            <span class="feature-text"><strong>Symptom Checker:</strong> Report your symptoms</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">📊</span>
+            <span class="feature-text"><strong>Results:</strong> Get department recommendations</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close-btn-footer">Got it, thanks</button>
+        <a href="bmi.html" class="btn btn-primary">Start Assessment →</a>
+      </div>
+    </div>
+  </div>
+
+       HEADER — Centered KATH Official Branding
+       ═══════════════════════════════════════════ -->
+  <header>
+    <!-- Date, Time & Weather Widget -->
+    <div class="datetime-weather-widget">
+      <div class="widget-content">
+        <div class="datetime-display">
+          <div class="time-display" id="time-display">--:--</div>
+          <div class="date-display" id="date-display">Loading...</div>
+        </div>
+        <div class="weather-display" id="weather-display">
+          <span class="weather-temp">--°C</span>
+          <span class="weather-icon">🌤️</span>
+          <span class="weather-desc">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="kath-logo.jpg" alt="Komfo Anokye Teaching Hospital Logo" class="header-logo" />
+        <div class="header-text">
+          <h1>Komfo Anokye Teaching Hospital</h1>
+          <p>Patient Self-Assessment Tool &bull; Kumasi, Ghana</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Centered Main Dropdown Navigation ── -->
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn" type="button" aria-expanded="false">
+            <span class="menu-icon">☰</span>
+            <span>Menu &amp; Assessment Navigation</span>
+            <span class="menu-arrow">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html" class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <div class="nav-text">
+                <strong>Home</strong>
+                <small>Landing page &amp; overview</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">📋 Patient Self-Assessment</div>
+            
+            <a href="bmi.html" class="nav-item">
+              <span class="nav-icon">⚖️</span>
+              <div class="nav-text">
+                <strong>Step 1: BMI Calculator</strong>
+                <small>Enter height, weight &amp; metrics</small>
+              </div>
+            </a>
+            <a href="symptoms.html" class="nav-item">
+              <span class="nav-icon">🩺</span>
+              <div class="nav-text">
+                <strong>Step 2: Symptom Checker</strong>
+                <small>Select experienced symptoms</small>
+              </div>
+            </a>
+            <a href="results.html" class="nav-item">
+              <span class="nav-icon">📊</span>
+              <div class="nav-text">
+                <strong>Step 3: View Results</strong>
+                <small>BMI reading &amp; KATH directorate</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">🏥 Hospital &amp; Feedback</div>
+            
+            <a href="about.html" class="nav-item">
+              <span class="nav-icon">ℹ️</span>
+              <div class="nav-text">
+                <strong>About KATH</strong>
+                <small>History, mission &amp; clinical services</small>
+              </div>
+            </a>
+            <a href="map.html" class="nav-item">
+              <span class="nav-icon">🗺️</span>
+              <div class="nav-text">
+                <strong>KATH Hospital Map</strong>
+                <small>Find your way around campus</small>
+              </div>
+            </a>
+            <a href="feedback.html" class="nav-item">
+              <span class="nav-icon">💬</span>
+              <div class="nav-text">
+                <strong>Patient Feedback</strong>
+                <small>Share comments &amp; ratings</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT — Landing / Hero Page
+       ═══════════════════════════════════════════ -->
+  <main>
+    <div class="container">
+
+      <!-- Hero section -->
+      <section class="hero">
+        <span class="hero-icon">🩺</span>
+        <h2>Welcome to the KATH<br>Self-Assessment Tool</h2>
+        <p>
+          Answer a few quick questions about your health to get a BMI reading
+          and a suggested KATH directorate to visit — right before your consultation.
+        </p>
+        <!-- Primary CTA button -->
+        <a href="bmi.html" class="btn btn-primary btn-lg">
+          🚀 Start Assessment
+        </a>
+      </section>
+
+      <!-- How it works feature cards -->
+      <section>
+        <div style="text-align:center;margin-bottom:1rem;">
+          <h3 style="color:var(--primary);font-size:1.15rem;">⚡ How It Works</h3>
+          <p style="color:var(--text-muted);font-size:.88rem;margin-top:.3rem;">
+            Three simple steps — takes less than 2 minutes
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <!-- Step 1 -->
+          <div class="feature-card">
+            <span class="icon">⚖️</span>
+            <h3>Step 1 — BMI Check</h3>
+            <p>Enter your name, age, gender, height, and weight. We calculate your Body Mass Index instantly.</p>
+          </div>
+          <!-- Step 2 -->
+          <div class="feature-card">
+            <span class="icon">🔍</span>
+            <h3>Step 2 — Symptoms</h3>
+            <p>Select any symptoms you are experiencing. Multiple selections are allowed.</p>
+          </div>
+          <!-- Step 3 -->
+          <div class="feature-card">
+            <span class="icon">📄</span>
+            <h3>Step 3 — Results</h3>
+            <p>View your BMI result and the recommended KATH directorate to visit.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Disclaimer notice on landing page -->
+      <div class="disclaimer">
+        <div class="disclaimer-title">⚠️ Important Notice</div>
+        <p>
+          This tool is for <strong>educational and self-assessment purposes only</strong>
+          and does <strong>not</strong> replace professional medical diagnosis.
+          Please consult a KATH staff member for proper evaluation.
+        </p>
+      </div>
+
+      <!-- Quick info row -->
+      <section style="margin-top:1.5rem;">
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+          <div style="display:flex;align-items:center;gap:.4rem;color:var(--text-mid);font-size:.85rem;">
+            🔒 <span>No data sent to any server</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.4rem;color:var(--text-mid);font-size:.85rem;">
+            📱 <span>Works on mobile &amp; desktop</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.4rem;color:var(--text-mid);font-size:.85rem;">
+            ⚡ <span>Instant results</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.4rem;color:var(--text-mid);font-size:.85rem;">
+            🆓 <span>Free to use</span>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER — appears on every page
+       ═══════════════════════════════════════════ -->
+  <footer>
+    <p>
+      <strong>Komfo Anokye Teaching Hospital</strong> &mdash; Kumasi, Ghana &nbsp;|&nbsp;
+      🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp;
+      <span>Student Mini Project &copy; 2024</span>
+    </p>
+    <p style="margin-top:.3rem;font-size:.76rem;">
+      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+    </p>
+  </footer>
+
+  <!-- Load shared JavaScript -->
+  <script src="script.js"></script>
+  
+  <!-- Initialize Date/Time/Weather immediately -->
+  <script>
+    // Immediate initialization of date/time/weather
+    (function() {
+      function updateDateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeDisplay = document.getElementById('time-display');
+        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes}`;
+
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const dateStr = now.toLocaleDateString('en-US', options);
+        const dateDisplay = document.getElementById('date-display');
+        if (dateDisplay) dateDisplay.textContent = dateStr;
+      }
+
+      function getWeatherIcon(code, isDay) {
+        if (code === 0) return isDay ? '☀️' : '🌙';
+        if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️';
+        if (code === 3) return '☁️';
+        if (code === 45 || code === 48) return '🌫️';
+        if (code >= 51 && code <= 67) return '🌧️';
+        if (code >= 71 && code <= 86) return '❄️';
+        if (code >= 80 && code <= 82) return '🌦️';
+        if (code >= 95 && code <= 99) return '⛈️';
+        return '🌤️';
+      }
+
+      function getWeatherDescription(code) {
+        const descriptions = {
+          0: 'Clear', 1: 'Cloudy', 2: 'Cloudy', 3: 'Overcast', 45: 'Foggy', 48: 'Foggy',
+          51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Rainy', 63: 'Rainy', 65: 'Rainy',
+          71: 'Snowy', 73: 'Snowy', 75: 'Snowy', 77: 'Snow', 80: 'Showers', 81: 'Showers',
+          82: 'Showers', 85: 'Snow', 86: 'Snow', 95: 'Stormy', 96: 'Stormy', 99: 'Stormy'
+        };
+        return descriptions[code] || 'Check weather';
+      }
+
+      function fetchWeather() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function(pos) {
+              getWeatherData(pos.coords.latitude, pos.coords.longitude);
+            },
+            function() {
+              getWeatherData(6.627, -1.616); // Kumasi default
+            },
+            { timeout: 5000 }
+          );
+        } else {
+          getWeatherData(6.627, -1.616);
+        }
+      }
+
+      function getWeatherData(lat, lon) {
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&timezone=auto`)
+          .then(r => r.json())
+          .then(data => {
+            const c = data.current;
+            const temp = Math.round(c.temperature_2m);
+            const icon = getWeatherIcon(c.weather_code, c.is_day === 1);
+            const desc = getWeatherDescription(c.weather_code);
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = `<span class="weather-temp">${temp}°C</span><span class="weather-icon">${icon}</span><span class="weather-desc">${desc}</span>`;
+          })
+          .catch(() => {
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = '<span class="weather-temp">--°C</span><span class="weather-icon">🌍</span><span class="weather-desc">Weather unavailable</span>';
+          });
+      }
+
+      // Initialize on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+        fetchWeather();
+        setInterval(fetchWeather, 1800000);
+      });
+
+      // Also try immediately in case DOMContentLoaded already fired
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateDateTime);
+      } else {
+        updateDateTime();
+        fetchWeather();
+      }
+    })();
+  </script>
+</body>
+</html>

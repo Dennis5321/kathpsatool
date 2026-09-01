@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Assessment — KATH Self-Assessment Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="kath-logo.jpg" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════
+       WELCOME POPUP MODAL
+       ═══════════════════════════════ -->
+  <div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content welcome-modal-box">
+      <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
+      <div class="modal-header">
+        <span class="modal-icon">👋</span>
+        <h2>Welcome to KATH</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Komfo Anokye Teaching Hospital</strong></p>
+        <p>Thank you for using our Patient Self-Assessment Tool. This quick and easy assessment will help us understand your health status and direct you to the appropriate hospital department for consultation.</p>
+        <div class="welcome-features">
+          <div class="feature">
+            <span class="feature-icon">⚖️</span>
+            <span class="feature-text"><strong>BMI Calculator:</strong> Assess your body mass index</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🩺</span>
+            <span class="feature-text"><strong>Symptom Checker:</strong> Report your symptoms</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">📊</span>
+            <span class="feature-text"><strong>Results:</strong> Get department recommendations</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close-btn-footer">Got it, thanks</button>
+        <a href="bmi.html" class="btn btn-primary">Start Assessment →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+  <header>
+    <!-- Date, Time & Weather Widget -->
+    <div class="datetime-weather-widget">
+      <div class="widget-content">
+        <div class="datetime-display">
+          <div class="time-display" id="time-display">--:--</div>
+          <div class="date-display" id="date-display">Loading...</div>
+        </div>
+        <div class="weather-display" id="weather-display">
+          <span class="weather-temp">--°C</span>
+          <span class="weather-icon">🌤️</span>
+          <span class="weather-desc">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="kath-logo.jpg" alt="Komfo Anokye Teaching Hospital Logo" class="header-logo" />
+        <div class="header-text">
+          <h1>Komfo Anokye Teaching Hospital</h1>
+          <p>Patient Self-Assessment Tool &bull; Kumasi, Ghana</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Centered Main Dropdown Navigation ── -->
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn" type="button" aria-expanded="false">
+            <span class="menu-icon">☰</span>
+            <span>Menu &amp; Assessment Navigation</span>
+            <span class="menu-arrow">▾</span>
+          </button>
+          <div class="nav-dropdown-menu">
+            <a href="index.html" class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <div class="nav-text">
+                <strong>Home</strong>
+                <small>Landing page &amp; overview</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">📋 Patient Self-Assessment</div>
+            
+            <a href="bmi.html" class="nav-item active">
+              <span class="nav-icon">⚖️</span>
+              <div class="nav-text">
+                <strong>Step 1: BMI Calculator</strong>
+                <small>Enter height, weight &amp; metrics</small>
+              </div>
+            </a>
+            <a href="symptoms.html" class="nav-item">
+              <span class="nav-icon">🩺</span>
+              <div class="nav-text">
+                <strong>Step 2: Symptom Checker</strong>
+                <small>Select experienced symptoms</small>
+              </div>
+            </a>
+            <a href="results.html" class="nav-item">
+              <span class="nav-icon">📊</span>
+              <div class="nav-text">
+                <strong>Step 3: View Results</strong>
+                <small>BMI reading &amp; KATH directorate</small>
+              </div>
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-category">🏥 Hospital &amp; Feedback</div>
+            
+            <a href="about.html" class="nav-item">
+              <span class="nav-icon">ℹ️</span>
+              <div class="nav-text">
+                <strong>About KATH</strong>
+                <small>History, mission &amp; clinical services</small>
+              </div>
+            </a>
+            <a href="map.html" class="nav-item">
+              <span class="nav-icon">🗺️</span>
+              <div class="nav-text">
+                <strong>KATH Hospital Map</strong>
+                <small>Find your way around campus</small>
+              </div>
+            </a>
+            <a href="feedback.html" class="nav-item">
+              <span class="nav-icon">💬</span>
+              <div class="nav-text">
+                <strong>Patient Feedback</strong>
+                <small>Share comments &amp; ratings</small>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+  <main>
+    <div class="container">
+
+      <!-- Progress Indicator: Step 1 of 3 -->
+      <div class="progress-bar-wrapper">
+        <div class="progress-label">Step 1 of 3 — Patient Information &amp; BMI</div>
+        <div class="progress-steps">
+          <div class="step-circle active">1</div>
+          <div class="step-line"></div>
+          <div class="step-circle">2</div>
+          <div class="step-line"></div>
+          <div class="step-circle">3</div>
+        </div>
+        <div class="step-labels">
+          <span class="active-label">BMI Check</span>
+          <span>Symptoms</span>
+          <span>Results</span>
+        </div>
+      </div>
+
+      <!-- Full-Width 2-Column Grid Layout -->
+      <div class="grid-2col-wide-left">
+
+        <!-- Column 1: Patient Information & BMI Form -->
+        <div class="card">
+          <div class="card-title">⚖️ Patient Information</div>
+          <p class="card-subtitle">
+            Please fill in your basic details and measurements below accurately. Your BMI will be calculated automatically.
+          </p>
+
+          <form id="bmi-form" novalidate>
+
+            <!-- Title -->
+            <div class="form-group">
+              <label for="title">
+                <span class="emoji-label">🪪</span> Title <span style="color:var(--danger)">*</span>
+              </label>
+              <select id="title" name="title" required>
+                <option value="">— Select —</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Miss">Miss</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Prof.">Prof.</option>
+                <option value="Rev.">Rev.</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <div id="custom-title-wrap" style="display:none; margin-top:0.8rem;">
+                <label for="custom-title">
+                  <span class="emoji-label">✍️</span> Enter your title <span style="color:var(--danger)">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="custom-title"
+                  name="custom-title"
+                  placeholder="e.g. Lord, Elder, Hon."
+                  autocomplete="honorific-prefix"
+                />
+              </div>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label for="name">
+                <span class="emoji-label">👤</span> Full Name <span style="color:var(--danger)">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g. Ama Boateng"
+                autocomplete="name"
+                required
+              />
+              <span class="hint">Enter your first and last name as it appears on your health insurance or hospital card.</span>
+            </div>
+
+            <!-- Age and Gender -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="age">
+                  <span class="emoji-label">🎂</span> Age (years) <span style="color:var(--danger)">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  placeholder="e.g. 34"
+                  min="1"
+                  max="120"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="gender">
+                  <span class="emoji-label">🪪</span> Gender <span style="color:var(--danger)">*</span>
+                </label>
+                <select id="gender" name="gender" required>
+                  <option value="">— Select —</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Height and Weight -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="height">
+                  <span class="emoji-label">📏</span> Height (cm) <span style="color:var(--danger)">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="height"
+                  name="height"
+                  placeholder="e.g. 165"
+                  min="50"
+                  max="250"
+                  step="0.1"
+                  required
+                />
+                <span class="hint">Stand straight without shoes (100 cm = 1 metre).</span>
+              </div>
+
+              <div class="form-group">
+                <label for="weight">
+                  <span class="emoji-label">⚖️</span> Weight (kg) <span style="color:var(--danger)">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="weight"
+                  name="weight"
+                  placeholder="e.g. 70"
+                  min="2"
+                  max="500"
+                  step="0.1"
+                  required
+                />
+                <span class="hint">Weigh yourself without heavy coats or shoes.</span>
+              </div>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:1rem;">
+              ➡️ Calculate BMI &amp; Continue to Symptoms
+            </button>
+
+          </form>
+        </div><!-- /card (left) -->
+
+        <!-- Column 2: Health Info, Guidelines & WHO Chart -->
+        <div>
+
+          <!-- WHO Standard Chart Card -->
+          <div class="card">
+            <div class="card-title">📊 WHO BMI Reference</div>
+            <p class="card-subtitle">
+              Body Mass Index (BMI) is an international screening indicator calculated from your height and weight:
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:.75rem;">
+              <div style="background:#e3f2fd;color:#0277bd;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                <span>🔹 Underweight</span>
+                <span>&lt; 18.5 kg/m²</span>
+              </div>
+              <div style="background:#e8f5e9;color:#2e7d32;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                <span>✅ Normal weight</span>
+                <span>18.5 – 24.9 kg/m²</span>
+              </div>
+              <div style="background:#fff3e0;color:#f57c00;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                <span>⚠️ Overweight</span>
+                <span>25.0 – 29.9 kg/m²</span>
+              </div>
+              <div style="background:#ffebee;color:#d5101a;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                <span>🚨 Obese</span>
+                <span>30.0+ kg/m²</span>
+              </div>
+            </div>
+
+            <div style="margin-top:1.2rem;background:var(--off-white);padding:.9rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.85rem;color:var(--text-mid);">
+              📌 <strong>Formula:</strong> BMI = Weight (kg) / [Height (m)]<sup>2</sup>
+            </div>
+          </div>
+
+          <!-- KATH Guidance Card -->
+          <div class="card">
+            <div class="card-title">🏥 KATH Pre-Consultation Tip</div>
+            <p style="color:var(--text-mid);font-size:.9rem;line-height:1.6;">
+              Having your accurate BMI ready prior to seeing a physician helps clinicians speed up your vital checks and recommend the right nutrition and dosage plans.
+            </p>
+          </div>
+
+        </div><!-- /column 2 -->
+
+      </div><!-- /grid-2col-wide-left -->
+
+      <!-- Full-Width Disclaimer -->
+      <div class="disclaimer">
+        <div class="disclaimer-title">⚠️ Disclaimer</div>
+        <p>
+          This tool is for <strong>educational and self-assessment purposes only</strong>
+          and does not replace professional medical diagnosis.
+          Please consult a KATH staff member for proper evaluation.
+        </p>
+      </div>
+
+    </div><!-- /container -->
+  </main>
+
+  <footer>
+    <p>
+      <strong>Komfo Anokye Teaching Hospital</strong> &mdash; Kumasi, Ghana &nbsp;|&nbsp;
+      🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp; Student Mini Project &copy; 2024
+    </p>
+    <p style="margin-top:.3rem;font-size:.76rem;">
+      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+  
+  <!-- Initialize Date/Time/Weather immediately -->
+  <script>
+    (function() {
+      function updateDateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeDisplay = document.getElementById('time-display');
+        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes}`;
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const dateStr = now.toLocaleDateString('en-US', options);
+        const dateDisplay = document.getElementById('date-display');
+        if (dateDisplay) dateDisplay.textContent = dateStr;
+      }
+      function getWeatherIcon(code, isDay) {
+        if (code === 0) return isDay ? '☀️' : '🌙';
+        if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️';
+        if (code === 3) return '☁️';
+        if (code === 45 || code === 48) return '🌫️';
+        if (code >= 51 && code <= 67) return '🌧️';
+        if (code >= 71 && code <= 86) return '❄️';
+        if (code >= 80 && code <= 82) return '🌦️';
+        if (code >= 95 && code <= 99) return '⛈️';
+        return '🌤️';
+      }
+      function getWeatherDescription(code) {
+        const descriptions = {0: 'Clear', 1: 'Cloudy', 2: 'Cloudy', 3: 'Overcast', 45: 'Foggy', 48: 'Foggy', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 61: 'Rainy', 63: 'Rainy', 65: 'Rainy', 71: 'Snowy', 73: 'Snowy', 75: 'Snowy', 77: 'Snow', 80: 'Showers', 81: 'Showers', 82: 'Showers', 85: 'Snow', 86: 'Snow', 95: 'Stormy', 96: 'Stormy', 99: 'Stormy'};
+        return descriptions[code] || 'Check weather';
+      }
+      function fetchWeather() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(pos) { getWeatherData(pos.coords.latitude, pos.coords.longitude); }, function() { getWeatherData(6.627, -1.616); }, { timeout: 5000 });
+        } else { getWeatherData(6.627, -1.616); }
+      }
+      function getWeatherData(lat, lon) {
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&timezone=auto`)
+          .then(r => r.json())
+          .then(data => {
+            const c = data.current;
+            const temp = Math.round(c.temperature_2m);
+            const icon = getWeatherIcon(c.weather_code, c.is_day === 1);
+            const desc = getWeatherDescription(c.weather_code);
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = `<span class="weather-temp">${temp}°C</span><span class="weather-icon">${icon}</span><span class="weather-desc">${desc}</span>`;
+          })
+          .catch(() => {
+            const w = document.getElementById('weather-display');
+            if (w) w.innerHTML = '<span class="weather-temp">--°C</span><span class="weather-icon">🌍</span><span class="weather-desc">Weather unavailable</span>';
+          });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function() { updateDateTime(); setInterval(updateDateTime, 60000); fetchWeather(); setInterval(fetchWeather, 1800000); }); } else { updateDateTime(); fetchWeather(); }
+    })();
+  </script>
+</body>
+</html>
