@@ -1,5 +1,36 @@
 // KATH Patient Self-Assessment Tool Main JavaScript File
 
+const KATH_DIRECTORATES = {
+  anaesthesia: '💉 Anaesthesia & Intensive Care',
+  childHealth: '👶 Child Health',
+  laboratory: '🧬 Laboratory Services',
+  radiology: '🩻 Radiology',
+  emergencyMedicine: '🏥 Emergency Medicine',
+  eent: '👁️ Eye, Ear, Nose & Throat (EENT)',
+  familyMedicine: '👨‍👩‍👧 Family Medicine',
+  internalMedicine: '🩺 Internal Medicine',
+  obstetricsGynaecology: '🤱 Obstetrics & Gynaecology',
+  oncology: '🔬 Oncology',
+  oralHealth: '🦷 Oral Health',
+  surgery: '🦴 Surgery',
+  traumatologyOrthopaedics: '🦿 Traumatology & Orthopaedics'
+};
+
+function initAboutDirectorates() {
+  const directorateGrid = document.getElementById('directorate-list');
+  if (!directorateGrid) return;
+
+  directorateGrid.replaceChildren();
+  Object.values(KATH_DIRECTORATES).forEach(function (directorate) {
+    const chip = document.createElement('div');
+    chip.className = 'service-chip';
+    chip.textContent = directorate;
+    directorateGrid.appendChild(chip);
+  });
+}
+
+initAboutDirectorates();
+
 
 // SECTION A INTERACTIVE MEDICAL TOOLS ANIMATED BACKGROUND
 
@@ -1043,35 +1074,35 @@ function initSymptomsPage() {
       const normalizedSymptom = symptom.toLowerCase();
       switch (normalizedSymptom) {
         case 'chest':
-          directorateSet.add('🏥 Emergency Medicine');
+          directorateSet.add(KATH_DIRECTORATES.emergencyMedicine);
           break;
         case 'fever':
           if (patient.age < 18) {
-            directorateSet.add('👶 Child Health');
+            directorateSet.add(KATH_DIRECTORATES.childHealth);
           } else {
-            directorateSet.add('🩺 Medicine');
+            directorateSet.add(KATH_DIRECTORATES.internalMedicine);
           }
           break;
         case 'pregnancy':
-          directorateSet.add('🤱 Obstetrics & Gynaecology');
+          directorateSet.add(KATH_DIRECTORATES.obstetricsGynaecology);
           break;
         case 'lump':
-          directorateSet.add('🔬 Oncology');
+          directorateSet.add(KATH_DIRECTORATES.oncology);
           break;
         case 'injury':
-          directorateSet.add('🦴 Surgery / Emergency Medicine');
+          directorateSet.add(KATH_DIRECTORATES.traumatologyOrthopaedics);
           break;
         case 'mental':
-          directorateSet.add('🧠 Psychiatry');
+          directorateSet.add(KATH_DIRECTORATES.familyMedicine);
           break;
         case 'skin':
-          directorateSet.add('🩹 Dermatology / Medicine');
+          directorateSet.add(KATH_DIRECTORATES.familyMedicine);
           break;
         case 'dental':
-          directorateSet.add('🦷 Dental Directorate');
+          directorateSet.add(KATH_DIRECTORATES.oralHealth);
           break;
         case 'eye':
-          directorateSet.add('👁️ Eye Directorate');
+          directorateSet.add(KATH_DIRECTORATES.eent);
           break;
         default:
           break;
