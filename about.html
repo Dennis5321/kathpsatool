@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,9 +9,7 @@
 </head>
 <body>
 
-  <!-- ═══════════════════════════════
-       WELCOME POPUP MODAL
-       ═══════════════════════════════ -->
+  <!-- WELCOME POPUP MODAL -->
   <div id="welcome-modal" class="modal-overlay">
     <div class="modal-content welcome-modal-box">
       <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
@@ -25,7 +23,7 @@
         <div class="welcome-features">
           <div class="feature">
             <span class="feature-icon">⚖️</span>
-            <span class="feature-text"><strong>BMI Calculator:</strong> Assess your body mass index</span>
+            <span class="feature-text"><strong>Body Mass Index (BMI) Calculator:</strong> Assess your body mass index</span>
           </div>
           <div class="feature">
             <span class="feature-icon">🩺</span>
@@ -44,9 +42,9 @@
     </div>
   </div>
 
-  <!-- ═══════════════ HEADER ═══════════════ -->
+  <!-- HEADER -->
   <header>
-    <!-- Date, Time & Weather Widget -->
+    <!-- Date Time & Weather Widget -->
     <div class="datetime-weather-widget">
       <div class="widget-content">
         <div class="datetime-display">
@@ -71,7 +69,7 @@
       </div>
     </div>
 
-    <!-- ── Centered Main Dropdown Navigation ── -->
+    <!-- Centered Main Dropdown Navigation -->
     <nav>
       <div class="nav-inner">
         <div class="nav-dropdown">
@@ -95,7 +93,7 @@
             <a href="bmi.html" class="nav-item">
               <span class="nav-icon">⚖️</span>
               <div class="nav-text">
-                <strong>Step 1: BMI Calculator</strong>
+                <strong>Step 1: Body Mass Index (BMI) Calculator</strong>
                 <small>Enter height, weight &amp; metrics</small>
               </div>
             </a>
@@ -110,7 +108,7 @@
               <span class="nav-icon">📊</span>
               <div class="nav-text">
                 <strong>Step 3: View Results</strong>
-                <small>BMI reading &amp; KATH directorate</small>
+                <small>Body Mass Index (BMI) reading &amp; KATH directorate</small>
               </div>
             </a>
             
@@ -122,13 +120,6 @@
               <div class="nav-text">
                 <strong>About KATH</strong>
                 <small>History, mission &amp; clinical services</small>
-              </div>
-            </a>
-            <a href="map.html" class="nav-item">
-              <span class="nav-icon">🗺️</span>
-              <div class="nav-text">
-                <strong>KATH Hospital Map</strong>
-                <small>Find your way around campus</small>
               </div>
             </a>
             <a href="feedback.html" class="nav-item">
@@ -144,7 +135,7 @@
     </nav>
   </header>
 
-  <!-- ═══════════════ MAIN ═══════════════ -->
+  <!-- MAIN -->
   <main>
     <div class="container">
 
@@ -237,25 +228,23 @@
         <p class="card-subtitle">
           KATH operates through specialised clinical directorates to deliver focused care.
         </p>
-        <div class="services-grid">
-          <div class="service-chip">🏥 Emergency Medicine</div>
-          <div class="service-chip">🩺 Medicine</div>
-          <div class="service-chip">🦴 Surgery</div>
-          <div class="service-chip">🤱 Obstetrics &amp; Gynaecology</div>
-          <div class="service-chip">👶 Child Health / Paediatrics</div>
-          <div class="service-chip">🔬 Oncology</div>
-          <div class="service-chip">🧠 Psychiatry</div>
-          <div class="service-chip">🌿 Dermatology</div>
-          <div class="service-chip">🦷 Dental Directorate</div>
-          <div class="service-chip">👁️ Eye Directorate</div>
-          <div class="service-chip">🫀 Cardiology</div>
-          <div class="service-chip">🧬 Laboratory Services</div>
-          <div class="service-chip">💊 Pharmacy</div>
-          <div class="service-chip">🩻 Radiology</div>
-          <div class="service-chip">🏋️ Physiotherapy</div>
-          <div class="service-chip">🍽️ Nutrition &amp; Dietetics</div>
-          <div class="service-chip">🏨 General OPD</div>
-          <div class="service-chip">🧪 Research &amp; Education</div>
+        <div class="directorate-group">
+          <h3>Clinical Directorates</h3>
+          <div class="services-grid">
+            <div class="service-chip">💉 Anaesthesia &amp; Intensive Care</div>
+            <div class="service-chip">👶 Child Health</div>
+            <div class="service-chip">🧬 Laboratory Services</div>
+            <div class="service-chip">🩻 Radiology</div>
+            <div class="service-chip">🏥 Emergency Medicine</div>
+            <div class="service-chip">👁️ Eye, Ear, Nose &amp; Throat (EENT)</div>
+            <div class="service-chip">👨‍👩‍👧 Family Medicine</div>
+            <div class="service-chip">🩺 Internal Medicine</div>
+            <div class="service-chip">🤱 Obstetrics &amp; Gynaecology</div>
+            <div class="service-chip">🔬 Oncology</div>
+            <div class="service-chip">🦷 Oral Health</div>
+            <div class="service-chip">🦴 Surgery</div>
+            <div class="service-chip">🦿 Traumatology &amp; Orthopaedics</div>
+          </div>
         </div>
       </div>
 
@@ -269,15 +258,15 @@
           </div>
           <div>
             <p style="font-weight:700;color:var(--primary);margin-bottom:.3rem;">📞 Phone</p>
-            <p style="color:var(--text-mid);font-size:.92rem;">+233 32 202 2301</p>
+            <p style="color:var(--text-mid);font-size:.92rem;"><a href="tel:+233593830400" style="color:var(--primary);font-weight:700;">+233 593 830 400</a><br/><a href="tel:+233556490029" style="color:var(--primary);font-weight:700;">+233 556 490 029</a></p>
           </div>
           <div>
-            <p style="font-weight:700;color:var(--primary);margin-bottom:.3rem;">🕐 OPD Hours</p>
-            <p style="color:var(--text-mid);font-size:.92rem;">Mon–Fri: 7:30 AM – 5:00 PM<br/>Emergency: 24 / 7</p>
+            <p style="font-weight:700;color:var(--primary);margin-bottom:.3rem;">🕐 Clinic Hours</p>
+            <p style="color:var(--text-mid);font-size:.92rem;">Accident &amp; Emergency — 24 Hours Service<br/>Family Medicine — 24 Hour Service<br/>Lab Services — 8 AM – 5 PM</p>
           </div>
           <div>
             <p style="font-weight:700;color:var(--primary);margin-bottom:.3rem;">🌐 Website</p>
-            <p style="color:var(--text-mid);font-size:.92rem;"><a href="http://www.kathhospital.gov.gh" target="_blank" style="color:var(--primary);font-weight:700;">www.kathhospital.gov.gh</a></p>
+            <p style="color:var(--text-mid);font-size:.92rem;"><a href="https://www.kath.gov.gh" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">www.kath.gov.gh</a></p>
           </div>
         </div>
       </div>
@@ -298,7 +287,8 @@
       🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp; Student Mini Project &copy; 2024
     </p>
     <p style="margin-top:.3rem;font-size:.76rem;">
-      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+      Call KATH: <a href="tel:+233593830400">+233 593 830 400</a> or <a href="tel:+233556490029">+233 556 490 029</a> &nbsp;|&nbsp;
+      <a href="https://www.kath.gov.gh" target="_blank" rel="noopener noreferrer">www.kath.gov.gh</a>
     </p>
   </footer>
 

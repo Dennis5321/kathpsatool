@@ -1,14 +1,6 @@
-/* ==========================================================
-   KATH Patient Self-Assessment Tool — Full-Width Stylesheet
-   Theme   : Exact KATH Logo Red (#D5101A) & Clean Hospital White
-   Layout  : Modern Full-Page / Full-Width Responsive Design
-   Author  : Student Mini Project
-   Hospital: Komfo Anokye Teaching Hospital, Kumasi, Ghana
-   ========================================================== */
+/* KATH Patient Self-Assessment Tool Page Stylesheet */
 
-/* ── 1. CSS Custom Properties (Variables) ──────────────────
-   Exact match to the vibrant red color of the KATH Logo
-   ─────────────────────────────────────────────────────── */
+/* 1 CSS Custom Properties (Variables) */
 :root {
   --primary:        #d5101a;   /* Exact vibrant KATH Logo Red */
   --primary-dark:   #b30b14;   /* Deep solid KATH Red */
@@ -39,8 +31,14 @@
   --font-body:      'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
 }
 
-/* ── 2. Reset & Base ────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* 2 Reset & Base */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html { scroll-behavior: smooth; font-size: 16px; width: 100%; }
 body {
   font-family: var(--font-body);
@@ -52,20 +50,21 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
-/* ── 3. Animated Background Canvas ───────────────────────── */
+/* 3 Animated Background Canvas */
 #bg-canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   z-index: 0;
   pointer-events: none;
 }
 
-/* ── 4. Full-Width Header ───────────────────────────────── */
+/* 4 Page Header */
 header {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
   color: var(--white);
@@ -104,7 +103,6 @@ header {
   object-fit: cover;
   background: var(--white);
   border: 3.5px solid var(--white);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   flex-shrink: 0;
   transition: transform var(--transition);
 }
@@ -119,7 +117,8 @@ header {
   font-weight: 800;
   letter-spacing: 0.02em;
   line-height: 1.2;
-  color: var(--white);
+    width: 100%;
+    min-width: 0;
   text-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 .header-text p {
@@ -128,13 +127,15 @@ header {
   margin-top: 0.25rem;
   letter-spacing: 0.04em;
   font-weight: 600;
+    min-width: 0;
 }
 
-/* ── 5. Full-Width Navigation & Main Dropdown Menu ──────── */
+/* 5 Page Navigation & Main Dropdown Menu */
 nav {
   background: rgba(0, 0, 0, 0.28);
   width: 100%;
   position: relative;
+    min-width: 0;
   z-index: 1000;
   background-image: url('KATH ENTRANCE.jpg');
   background-size: cover;
@@ -151,7 +152,7 @@ nav {
   align-items: center;
 }
 
-/* ── Main Nav Dropdown Container ── */
+/* Main Nav Dropdown Container */
 .nav-dropdown {
   position: relative;
   display: inline-block;
@@ -200,7 +201,7 @@ nav {
   transform: rotate(180deg);
 }
 
-/* ── Dropdown Menu Popup ── */
+/* Dropdown Menu Popup */
 .nav-dropdown-menu {
   display: none;
   position: absolute;
@@ -208,7 +209,8 @@ nav {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--white);
-  min-width: 320px;
+  width: min(320px, calc(100vw - 1rem));
+  min-width: 0;
   max-width: 90vw;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
   border-radius: var(--radius);
@@ -291,7 +293,7 @@ nav {
   margin-top: 0.1rem;
 }
 
-/* ── 6. Full-Width Main Layout ──────────────────────────── */
+/* 6 Page Main Layout */
 main {
   flex: 1;
   position: relative;
@@ -300,7 +302,7 @@ main {
   padding: 2.5rem 3rem 4rem;
 }
 
-/* Full-width container spanning the entire page */
+/* Page container spanning the entire page */
 .container,
 .container--wide,
 .container-fluid {
@@ -324,6 +326,11 @@ main {
   align-items: start;
 }
 
+.grid-2col > *,
+.grid-2col-wide-left > * {
+  min-width: 0;
+}
+
 @media (max-width: 960px) {
   .grid-2col,
   .grid-2col-wide-left {
@@ -332,7 +339,7 @@ main {
   }
 }
 
-/* ── 7. Full-Width Cards ────────────────────────────────── */
+/* 7 Page Cards */
 .card {
   background: var(--white);
   border-radius: var(--radius);
@@ -342,6 +349,7 @@ main {
   border: 1.8px solid var(--border);
   transition: box-shadow var(--transition), transform var(--transition);
   width: 100%;
+  min-width: 0;
 }
 .card:hover {
   box-shadow: var(--shadow-md);
@@ -362,7 +370,7 @@ main {
   line-height: 1.55;
 }
 
-/* ── 8. Hero Section (Full-Page Landing) ────────────────── */
+/* 8 Hero Section (Full-Page Landing) */
 .hero {
   text-align: center;
   padding: 3rem 1.5rem 2.5rem;
@@ -394,13 +402,14 @@ main {
   line-height: 1.65;
 }
 
-/* ── 9. Feature Cards Grid (Full-Width Responsive) ──────── */
+/* 9 Feature Cards Grid (Page Responsive) */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.8rem;
   margin: 2rem 0 2.5rem;
   width: 100%;
+  min-width: 0;
 }
 .feature-card {
   background: var(--white);
@@ -421,7 +430,7 @@ main {
 .feature-card h3    { font-size: 1.15rem; color: var(--primary); font-weight: 800; }
 .feature-card p     { font-size: 0.92rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.55; }
 
-/* ── 10. Progress Indicator (Full-Width) ────────────────── */
+/* 10 Progress Indicator (Page) */
 .progress-bar-wrapper {
   margin-bottom: 2.2rem;
   width: 100%;
@@ -466,7 +475,7 @@ main {
 .step-labels span { font-size: 0.82rem; color: var(--text-muted); text-align: center; flex: 1; font-weight: 600; }
 .step-labels span.active-label { color: var(--primary); font-weight: 800; }
 
-/* ── 11. Forms (Full-Width Responsive) ──────────────────── */
+/* 11 Forms (Page Responsive) */
 .form-group { margin-bottom: 1.45rem; }
 label {
   display: block;
@@ -498,12 +507,13 @@ input.invalid { border-color: var(--primary); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 @media (max-width: 650px) { .form-row { grid-template-columns: 1fr; } }
 
-/* ── 12. Symptom Checkbox Items (Full-Width Responsive Grid) */
+/* 12 Symptom Checkbox Items (Page Responsive Grid) */
 .symptom-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 1.1rem;
   width: 100%;
+  min-width: 0;
 }
 @media (max-width: 480px) {
   .symptom-list { grid-template-columns: 1fr; }
@@ -574,141 +584,7 @@ input.invalid { border-color: var(--primary); }
   font-size: 0.9rem;
 }
 
-.map-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.map-search-wrap {
-  flex: 1;
-  min-width: 220px;
-}
-
-.map-search-wrap label,
-.map-select-wrap label {
-  display: block;
-  margin-bottom: 0.45rem;
-  font-weight: 800;
-  color: var(--primary);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.map-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-}
-
-.map-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.75fr);
-  gap: 1rem;
-  align-items: stretch;
-}
-
-.map-panel {
-  background: #fffaf9;
-  border: 1.8px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-
-#kath-map {
-  width: 100%;
-  height: 480px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  border: 2px solid var(--border);
-  background: #edf6ff;
-}
-
-.map-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.map-select-wrap select {
-  width: 100%;
-}
-
-.map-status {
-  margin-top: 0.9rem;
-  background: #fff3f4;
-  border: 1.5px solid var(--red-border);
-  color: var(--text-mid);
-  border-radius: var(--radius-sm);
-  padding: 0.8rem 0.9rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.directions-panel {
-  background: var(--white);
-  border: 1.8px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.9rem;
-  min-height: 120px;
-  max-height: 300px;
-  overflow-y: auto;
-  color: var(--text-mid);
-}
-
-.directions-panel h4 {
-  color: var(--primary);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-
-.direction-step {
-  display: flex;
-  gap: 0.7rem;
-  align-items: flex-start;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid #f3e3e5;
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-
-.direction-step:last-child {
-  border-bottom: none;
-}
-
-.direction-step .step-count {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--white);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.72rem;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-@media (max-width: 760px) {
-  .map-layout {
-    grid-template-columns: 1fr;
-  }
-
-  #kath-map {
-    height: 380px;
-  }
-}
-
-/* ── 13. Buttons ────────────────────────────────────────── */
+/* 13 Buttons */
 .btn {
   display: inline-flex; align-items: center; gap: 0.55rem;
   padding: 0.85rem 2.2rem;
@@ -746,7 +622,7 @@ input.invalid { border-color: var(--primary); }
 .btn-block { width: 100%; justify-content: center; }
 .btn-group { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 1.8rem; }
 
-/* ── 14. Disclaimer Box ─────────────────────────────────── */
+/* 14 Disclaimer Box */
 .disclaimer {
   background: #fff6f6;
   border: 2px solid #f8bbbe;
@@ -763,7 +639,7 @@ input.invalid { border-color: var(--primary); }
 }
 .disclaimer p { font-size: 0.92rem; color: #421818; line-height: 1.6; }
 
-/* ── 15. Results Page (Full-Width Dashboard) ────────────── */
+/* 15 Results Page (Page Dashboard) */
 .result-label {
   font-size: 0.85rem; text-transform: uppercase;
   letter-spacing: 0.08em; color: var(--text-muted);
@@ -812,7 +688,7 @@ input.invalid { border-color: var(--primary); }
 .summary-item .val { font-size: 1.45rem; font-weight: 800; color: var(--primary); }
 .summary-item .lbl { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.25rem; font-weight: 700; }
 
-/* ── 16. About Page (Full-Width Multi-Column) ───────────── */
+/* 16 About Page (Page Multi-Column) */
 .about-hero {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-light) 100%);
   color: var(--white); padding: 3rem 2.5rem;
@@ -842,14 +718,23 @@ input.invalid { border-color: var(--primary); }
   gap: 1rem;
   width: 100%;
 }
+.directorate-group + .directorate-group { margin-top: 1.5rem; }
+.directorate-group h3 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+}
 .service-chip {
   display: flex; align-items: center; gap: 0.6rem;
   background: #fff8f8; border: 1.8px solid var(--red-border);
   border-radius: var(--radius-sm); padding: 0.75rem 1rem;
   font-size: 0.92rem; color: var(--text-dark); font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-/* ── 17. Feedback Page (Full-Width) ─────────────────────── */
+/* 17 Feedback Page (Page) */
 .star-rating { display: flex; gap: 0.5rem; margin-top: 0.4rem; }
 .star {
   font-size: 2.2rem; cursor: pointer; color: #ddd;
@@ -866,11 +751,11 @@ textarea { resize: vertical; min-height: 120px; }
 .feedback-success h3 { color: var(--primary); font-size: 1.35rem; font-weight: 800; }
 .feedback-success p  { color: var(--text-mid); font-size: 0.98rem; margin-top: 0.5rem; }
 
-/* ── 18. Alert / Error Banners ──────────────────────────── */
+/* 18 Alert / Error Banners */
 .alert { padding: 0.9rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.95rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
 .alert-error { background: #ffebee; border: 1.8px solid #ef9a9a; color: var(--primary); font-weight: 700; }
 
-/* ── 18. Date, Time & Weather Widget ────────────────────── */
+/* 18 Date Time & Weather Widget */
 .datetime-weather-widget {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.35));
   padding: 0.75rem 2.5rem;
@@ -943,7 +828,7 @@ textarea { resize: vertical; min-height: 120px; }
   white-space: nowrap;
 }
 
-/* ── Modal & Welcome Popup Styles ──────────────────────── */
+/* Modal & Welcome Popup Styles */
 .modal-overlay {
   display: flex;
   position: fixed;
@@ -1134,7 +1019,7 @@ textarea { resize: vertical; min-height: 120px; }
   }
 }
 
-/* ── 19. Full-Width Footer ──────────────────────────────── */
+/* 19 Page Footer */
 footer {
   background: var(--primary-dark); color: rgba(255,255,255,0.92);
   text-align: center; padding: 1.6rem 1.5rem;
@@ -1145,14 +1030,15 @@ footer {
 footer strong { color: var(--white); }
 footer a { color: #ffffff; text-decoration: underline; font-weight: 700; }
 footer a:hover { opacity: 0.85; }
+footer p { overflow-wrap: anywhere; }
 
-/* ── 20. Utility Classes ────────────────────────────────── */
+/* 20 Utility Classes */
 .text-center { text-align: center; }
 .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.8rem; }
 .d-none { display: none !important; }
 hr.divider { border: none; border-top: 2px solid var(--border); margin: 1.8rem 0; }
 
-/* ── 21. Responsive Breakpoints ─────────────────────────── */
+/* 21 Responsive Breakpoints */
 @media (max-width: 900px) {
   main { padding: 1.8rem 1.2rem 3rem; }
   .header-inner { padding: 0.9rem 1.2rem; }
@@ -1168,6 +1054,8 @@ hr.divider { border: none; border-top: 2px solid var(--border); margin: 1.8rem 0
   .card { padding: 1.4rem 1.1rem; }
   .hero-icon { font-size: 3.6rem; }
   .hero h2 { font-size: 1.55rem; }
+  .features-grid,
+  .symptom-list { grid-template-columns: minmax(0, 1fr); }
   .btn-group { flex-direction: column; }
   .btn-group .btn { width: 100%; justify-content: center; }
   .patient-summary { grid-template-columns: 1fr 1fr; }

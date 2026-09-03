@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMI Assessment — KATH Self-Assessment Tool</title>
+  <title>Body Mass Index (BMI) Assessment — KATH Self-Assessment Tool</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="kath-logo.jpg" />
 </head>
 <body>
 
-  <!-- ═══════════════════════════════
-       WELCOME POPUP MODAL
-       ═══════════════════════════════ -->
+  <!-- WELCOME POPUP MODAL -->
   <div id="welcome-modal" class="modal-overlay">
     <div class="modal-content welcome-modal-box">
       <button class="modal-close-btn" aria-label="Close welcome message">&times;</button>
@@ -25,7 +23,7 @@
         <div class="welcome-features">
           <div class="feature">
             <span class="feature-icon">⚖️</span>
-            <span class="feature-text"><strong>BMI Calculator:</strong> Assess your body mass index</span>
+            <span class="feature-text"><strong>Body Mass Index (BMI) Calculator:</strong> Assess your body mass index</span>
           </div>
           <div class="feature">
             <span class="feature-icon">🩺</span>
@@ -44,9 +42,9 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+  <!-- HEADER -->
   <header>
-    <!-- Date, Time & Weather Widget -->
+    <!-- Date Time & Weather Widget -->
     <div class="datetime-weather-widget">
       <div class="widget-content">
         <div class="datetime-display">
@@ -71,7 +69,7 @@
       </div>
     </div>
 
-    <!-- ── Centered Main Dropdown Navigation ── -->
+    <!-- Centered Main Dropdown Navigation -->
     <nav>
       <div class="nav-inner">
         <div class="nav-dropdown">
@@ -95,7 +93,7 @@
             <a href="bmi.html" class="nav-item active">
               <span class="nav-icon">⚖️</span>
               <div class="nav-text">
-                <strong>Step 1: BMI Calculator</strong>
+                <strong>Step 1: Body Mass Index (BMI) Calculator</strong>
                 <small>Enter height, weight &amp; metrics</small>
               </div>
             </a>
@@ -110,7 +108,7 @@
               <span class="nav-icon">📊</span>
               <div class="nav-text">
                 <strong>Step 3: View Results</strong>
-                <small>BMI reading &amp; KATH directorate</small>
+                <small>Body Mass Index (BMI) reading &amp; KATH directorate</small>
               </div>
             </a>
             
@@ -122,13 +120,6 @@
               <div class="nav-text">
                 <strong>About KATH</strong>
                 <small>History, mission &amp; clinical services</small>
-              </div>
-            </a>
-            <a href="map.html" class="nav-item">
-              <span class="nav-icon">🗺️</span>
-              <div class="nav-text">
-                <strong>KATH Hospital Map</strong>
-                <small>Find your way around campus</small>
               </div>
             </a>
             <a href="feedback.html" class="nav-item">
@@ -144,13 +135,13 @@
     </nav>
   </header>
 
-  <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+  <!-- MAIN -->
   <main>
     <div class="container">
 
       <!-- Progress Indicator: Step 1 of 3 -->
       <div class="progress-bar-wrapper">
-        <div class="progress-label">Step 1 of 3 — Patient Information &amp; BMI</div>
+        <div class="progress-label">Step 1 of 3 — Patient Information &amp; Body Mass Index (BMI)</div>
         <div class="progress-steps">
           <div class="step-circle active">1</div>
           <div class="step-line"></div>
@@ -159,20 +150,20 @@
           <div class="step-circle">3</div>
         </div>
         <div class="step-labels">
-          <span class="active-label">BMI Check</span>
+          <span class="active-label">Body Mass Index (BMI) Check</span>
           <span>Symptoms</span>
           <span>Results</span>
         </div>
       </div>
 
-      <!-- Full-Width 2-Column Grid Layout -->
+      <!-- Page 2-Column Grid Layout -->
       <div class="grid-2col-wide-left">
 
         <!-- Column 1: Patient Information & BMI Form -->
         <div class="card">
           <div class="card-title">⚖️ Patient Information</div>
           <p class="card-subtitle">
-            Please fill in your basic details and measurements below accurately. Your BMI will be calculated automatically.
+            Please fill in your basic details and measurements below accurately, then click Calculate Body Mass Index (BMI).
           </p>
 
           <form id="bmi-form" novalidate>
@@ -290,20 +281,34 @@
               </div>
             </div>
 
+            <div id="bmi-result" hidden aria-live="polite" style="margin-top:1rem;background:var(--off-white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem;text-align:center;">
+              <div style="color:var(--text-mid);font-size:.85rem;font-weight:700;">Your Body Mass Index (BMI)</div>
+              <div id="bmi-value" style="color:var(--primary);font-size:2rem;font-weight:800;line-height:1.2;"></div>
+              <div id="bmi-category" style="color:var(--text-mid);font-size:1rem;font-weight:800;margin-top:.25rem;"></div>
+            </div>
+
+            <button type="button" id="calculate-bmi-btn" class="btn btn-primary btn-block btn-lg" style="margin-top:1rem;">
+              Calculate Body Mass Index (BMI)
+            </button>
+
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:1rem;">
-              ➡️ Calculate BMI &amp; Continue to Symptoms
+              ➡️ Continue to Symptoms
             </button>
+
+            <a href="symptoms.html" class="btn btn-secondary btn-block btn-lg" style="margin-top:.75rem;">
+              Skip BMI and Continue to Symptoms
+            </a>
 
           </form>
         </div><!-- /card (left) -->
 
-        <!-- Column 2: Health Info, Guidelines & WHO Chart -->
+        <!-- Column 2: Health Info Guidelines & WHO Chart -->
         <div>
 
           <!-- WHO Standard Chart Card -->
           <div class="card">
-            <div class="card-title">📊 WHO BMI Reference</div>
+            <div class="card-title">📊 WHO Body Mass Index (BMI) Reference</div>
             <p class="card-subtitle">
               Body Mass Index (BMI) is an international screening indicator calculated from your height and weight:
             </p>
@@ -328,7 +333,7 @@
             </div>
 
             <div style="margin-top:1.2rem;background:var(--off-white);padding:.9rem 1rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.85rem;color:var(--text-mid);">
-              📌 <strong>Formula:</strong> BMI = Weight (kg) / [Height (m)]<sup>2</sup>
+              📌 <strong>Formula:</strong> Body Mass Index (BMI) = Weight (kg) / [Height (m)]<sup>2</sup>
             </div>
           </div>
 
@@ -336,7 +341,7 @@
           <div class="card">
             <div class="card-title">🏥 KATH Pre-Consultation Tip</div>
             <p style="color:var(--text-mid);font-size:.9rem;line-height:1.6;">
-              Having your accurate BMI ready prior to seeing a physician helps clinicians speed up your vital checks and recommend the right nutrition and dosage plans.
+              Having your accurate Body Mass Index (BMI) ready prior to seeing a physician helps clinicians speed up your vital checks and recommend the right nutrition and dosage plans.
             </p>
           </div>
 
@@ -344,7 +349,7 @@
 
       </div><!-- /grid-2col-wide-left -->
 
-      <!-- Full-Width Disclaimer -->
+      <!-- Page Disclaimer -->
       <div class="disclaimer">
         <div class="disclaimer-title">⚠️ Disclaimer</div>
         <p>
@@ -363,7 +368,8 @@
       🩺 KATH Patient Self-Assessment Tool &nbsp;|&nbsp; Student Mini Project &copy; 2024
     </p>
     <p style="margin-top:.3rem;font-size:.76rem;">
-      For emergencies, call KATH: <a href="tel:+233322022301">+233 32 202 2301</a>
+      Call KATH: <a href="tel:+233593830400">+233 593 830 400</a> or <a href="tel:+233556490029">+233 556 490 029</a> &nbsp;|&nbsp;
+      <a href="https://www.kath.gov.gh" target="_blank" rel="noopener noreferrer">www.kath.gov.gh</a>
     </p>
   </footer>
 

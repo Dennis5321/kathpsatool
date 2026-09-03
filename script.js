@@ -1,30 +1,7 @@
-/* ==========================================================
-   KATH Patient Self-Assessment Tool — Main JavaScript File
-   Author  : Student Mini Project
-   Hospital: Komfo Anokye Teaching Hospital, Kumasi, Ghana
-
-   HOW TO READ THIS FILE:
-   - Each section is labelled with a comment block.
-   - The file is split into logical parts:
-       A. Animated Background
-       B. Navigation helpers
-       C. BMI Page logic
-       D. Symptoms Page logic
-       E. Results Page logic
-       F. Feedback Page logic
-   - sessionStorage is used to pass data between pages
-     without needing a server or database.
-   ========================================================== */
+// KATH Patient Self-Assessment Tool Main JavaScript File
 
 
-/* ══════════════════════════════════════════════════════════
-   SECTION A — INTERACTIVE MEDICAL TOOLS ANIMATED BACKGROUND
-   ══════════════════════════════════════════════════════════
-   Draws floating medical tools (stethoscope, syringe & needle,
-   microscope, capsule pill, bandage, thermometer, ECG pulse,
-   and medical cross) that drift gently and interact with mouse
-   movements for a modern, subtle hospital experience.
-   ─────────────────────────────────────────────────────── */
+// SECTION A INTERACTIVE MEDICAL TOOLS ANIMATED BACKGROUND
 
 (function initMedicalBackground() {
   const canvas = document.createElement('canvas');
@@ -55,7 +32,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  // ── Available Medical Tool Shapes ───────────────────────
+  // Available Medical Tool Shapes
   const MEDICAL_TOOLS = [
     'stethoscope',
     'syringe',
@@ -67,21 +44,21 @@
     'pulse'
   ];
 
-  const PARTICLE_COUNT = 28;  // Reduced for more subtle, less cluttered appearance
+  const PARTICLE_COUNT = 28;
 
   function createParticle(atBottom) {
     return {
       x: Math.random() * window.innerWidth,
       y: atBottom ? window.innerHeight + 50 : Math.random() * window.innerHeight,
-      size: Math.random() * 20 + 34,          // 34px - 54px size for clear visibility
-      speed: Math.random() * 0.45 + 0.25,      // Smooth upward drift
-      rotation: Math.random() * Math.PI * 2,  // Initial rotation angle
+      size: Math.random() * 20 + 34,
+      speed: Math.random() * 0.45 + 0.25,
+      rotation: Math.random() * Math.PI * 2,
       rotSpeed: (Math.random() - 0.5) * 0.012,// Subtle rotation
-      baseOpacity: Math.random() * 0.15 + 0.15, // Subtle, refined 0.15 - 0.30 opacity
+      baseOpacity: Math.random() * 0.15 + 0.15,
       opacity: 0.22,
       tool: MEDICAL_TOOLS[Math.floor(Math.random() * MEDICAL_TOOLS.length)],
       floatOffset: Math.random() * Math.PI * 2,
-      depth: Math.random() * 0.6 + 0.4         // Parallax depth factor
+      depth: Math.random() * 0.6 + 0.4
     };
   }
 
@@ -89,7 +66,7 @@
     return createParticle(false);
   });
 
-  // ── Medical Tool Drawing Functions ─────────────────────
+  // Medical Tool Drawing Functions
 
   // 1. 🩺 Stethoscope
   function drawStethoscope(size, color) {
@@ -357,11 +334,11 @@
     ctx.stroke();
   }
 
-  // ── Main Animation Loop ────────────────────────────────
+  // Main Animation Loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const baseColor = '#d5101a'; // Exact KATH Logo Red
+    const baseColor = '#d5101a';
 
     // Optional subtle connecting lines between nearby floating tools
     for (let i = 0; i < particles.length; i++) {
@@ -456,7 +433,7 @@
 
       // If a particle drifts off the top of the screen, recycle it
       if (p.y < -60) {
-        Object.assign(p, createParticle(true)); // restart at bottom
+        Object.assign(p, createParticle(true));
       }
     });
 
@@ -469,15 +446,10 @@
 })();
 
 
-/* ══════════════════════════════════════════════════════════
-   SECTION A.5 — DATE/TIME/WEATHER & WELCOME MODAL (All Pages)
-   ══════════════════════════════════════════════════════════
-   Displays current date/time and weather information.
-   Shows welcome popup modal on first page load per session.
-   ─────────────────────────────────────────────────────── */
+// SECTION A5 DATE/TIME/WEATHER & WELCOME MODAL (All Pages)
 
 (function initDateTimeWeatherAndModal() {
-  // ── Date & Time Display ────────────────────────────────
+  // Date & Time Display
   function updateDateTime() {
     const now = new Date();
     
@@ -502,7 +474,7 @@
   updateDateTime();
   setInterval(updateDateTime, 60000);
 
-  // ── Weather Display ────────────────────────────────────
+  // Weather Display
   function fetchWeather() {
     // Try to get user's location, fall back to Ghana if denied
     if (navigator.geolocation) {
@@ -515,7 +487,7 @@
           // Default to Kumasi, Ghana (KATH location): 6.627, -1.616
           getWeatherData(6.627, -1.616);
         },
-        { timeout: 5000 } // 5 second timeout
+        { timeout: 5000 }
       );
     } else {
       // Fallback to Kumasi, Ghana
@@ -575,16 +547,16 @@
 
   function getWeatherIcon(code, isDay) {
     // WMO Weather interpretation codes
-    if (code === 0) return isDay ? '☀️' : '🌙';           // Clear sky
-    if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️'; // Mostly clear / Partly cloudy
-    if (code === 3) return '☁️';                           // Overcast
-    if (code === 45 || code === 48) return '🌫️';          // Foggy / Depositing rime fog
-    if (code >= 51 && code <= 67) return '🌧️';            // Drizzle / Rain
-    if (code >= 71 && code <= 86) return '❄️';            // Snow / Rain and snow / Showers
-    if (code >= 80 && code <= 82) return '🌦️';            // Rain showers
-    if (code >= 85 && code <= 86) return '❄️';            // Snow showers
-    if (code >= 95 && code <= 99) return '⛈️';            // Thunderstorm
-    return '🌤️'; // Default
+    if (code === 0) return isDay ? '☀️' : '🌙';
+    if (code === 1 || code === 2) return isDay ? '🌤️' : '🌥️';
+    if (code === 3) return '☁️';
+    if (code === 45 || code === 48) return '🌫️';
+    if (code >= 51 && code <= 67) return '🌧️';
+    if (code >= 71 && code <= 86) return '❄️';
+    if (code >= 80 && code <= 82) return '🌦️';
+    if (code >= 85 && code <= 86) return '❄️';
+    if (code >= 95 && code <= 99) return '⛈️';
+    return '🌤️';
   }
 
   function getWeatherDescription(code) {
@@ -601,9 +573,9 @@
 
   // Fetch weather immediately and retry every 30 minutes
   fetchWeather();
-  setInterval(fetchWeather, 1800000); // 30 minutes
+  setInterval(fetchWeather, 1800000);
 
-  // ── Welcome Modal Logic ────────────────────────────────
+  // Welcome Modal Logic
   const welcomeModal = document.getElementById('welcome-modal');
   if (welcomeModal) {
     // Check if modal has been shown this session
@@ -688,15 +660,7 @@
 })();
 
 
-/* ══════════════════════════════════════════════════════════
-   SECTION C — BMI PAGE (bmi.html)
-   ══════════════════════════════════════════════════════════
-   1. Validates the patient info form.
-   2. Calculates BMI from height and weight.
-   3. Determines BMI category.
-   4. Saves everything to sessionStorage.
-   5. Redirects to symptoms.html.
-   ─────────────────────────────────────────────────────── */
+// SECTION C BMI PAGE (bmihtml)
 
 // Only run this code if we are actually on bmi.html
 if (document.getElementById('bmi-form')) {
@@ -705,6 +669,21 @@ if (document.getElementById('bmi-form')) {
   const titleSelect = document.getElementById('title');
   const customTitleInput = document.getElementById('custom-title');
   const customTitleWrap = document.getElementById('custom-title-wrap');
+  const nameInput = document.getElementById('name');
+
+  if (nameInput) {
+    nameInput.addEventListener('input', function () {
+      const cursorPosition = this.selectionStart;
+      const formattedName = this.value.replace(/(^|\s)(\S)/g, function (match, boundary, firstLetter) {
+        return boundary + firstLetter.toUpperCase();
+      });
+
+      if (this.value !== formattedName) {
+        this.value = formattedName;
+        this.setSelectionRange(cursorPosition, cursorPosition);
+      }
+    });
+  }
 
   function toggleCustomTitle() {
     if (!titleSelect || !customTitleWrap || !customTitleInput) return;
@@ -743,21 +722,77 @@ if (document.getElementById('bmi-form')) {
     syncGenderFromTitle();
   }
 
+  const heightInput = document.getElementById('height');
+  const weightInput = document.getElementById('weight');
+  const bmiResult = document.getElementById('bmi-result');
+  const bmiValue = document.getElementById('bmi-value');
+  const bmiCategory = document.getElementById('bmi-category');
+  const calculateBmiButton = document.getElementById('calculate-bmi-btn');
+
+  function getBmiReading() {
+    const height = parseFloat(heightInput.value);
+    const weight = parseFloat(weightInput.value);
+
+    if (!height || height < 50 || height > 250 || !weight || weight < 2 || weight > 500) {
+      return null;
+    }
+
+    const heightMetres = height / 100;
+    const bmi = weight / (heightMetres * heightMetres);
+    let category = 'Obese';
+    if (bmi < 18.5) {
+      category = 'Underweight';
+    } else if (bmi < 25) {
+      category = 'Normal';
+    } else if (bmi < 30) {
+      category = 'Overweight';
+    }
+
+    return { bmi, category };
+  }
+
+  function updateBmiResult() {
+    const reading = getBmiReading();
+    if (!reading) {
+      bmiResult.hidden = true;
+      return;
+    }
+
+    const displayCategory = reading.category === 'Normal' ? 'Normal Weight' : reading.category;
+    const categoryStyles = {
+      Underweight: { background: '#e3f2fd', color: '#0277bd' },
+      Normal: { background: '#e8f5e9', color: '#2e7d32' },
+      Overweight: { background: '#fff3e0', color: '#f57c00' },
+      Obese: { background: '#ffebee', color: '#d5101a' },
+    };
+    const style = categoryStyles[reading.category];
+
+    bmiValue.textContent = `Body Mass Index (BMI): ${reading.bmi.toFixed(1)} kg/m²`;
+    bmiCategory.textContent = displayCategory;
+    bmiResult.style.backgroundColor = style.background;
+    bmiResult.style.borderColor = style.color;
+    bmiValue.style.color = style.color;
+    bmiCategory.style.color = style.color;
+    bmiResult.hidden = false;
+  }
+
+  calculateBmiButton.addEventListener('click', updateBmiResult);
+
   bmiForm.addEventListener('submit', function (event) {
     // Prevent the default form submission (which would reload the page)
     event.preventDefault();
 
-    // ── Read form values ───────────────────────────────
+    // Read form values
     const titleValue = titleSelect ? titleSelect.value : '';
     const customTitle = customTitleInput ? customTitleInput.value.trim() : '';
     const title = titleValue === 'Other' ? customTitle : titleValue;
     const name   = document.getElementById('name').value.trim();
     const age    = parseInt(document.getElementById('age').value, 10);
     const gender = document.getElementById('gender').value;
-    const height = parseFloat(document.getElementById('height').value); // in cm
-    const weight = parseFloat(document.getElementById('weight').value); // in kg
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
 
-    // ── Basic validation ───────────────────────────────
+    // Basic validation
     let valid = true;
 
     if (!titleValue) {
@@ -827,14 +862,14 @@ if (document.getElementById('bmi-form')) {
     // If any field is invalid, stop here
     if (!valid) return;
 
-    // ── BMI Calculation ────────────────────────────────
+    // BMI Calculation
     // Formula: BMI = weight(kg) / (height(m))^2
     // We convert height from centimetres to metres first.
     const heightMetres = height / 100;
     const bmi = weight / (heightMetres * heightMetres);
-    const bmiRounded = bmi.toFixed(1); // round to 1 decimal place
+    const bmiRounded = bmi.toFixed(1);
 
-    // ── Determine BMI Category ─────────────────────────
+    // Determine BMI Category
     // These thresholds are set by the World Health Organisation (WHO).
     let category = '';
     if (bmi < 18.5) {
@@ -847,7 +882,7 @@ if (document.getElementById('bmi-form')) {
       category = 'Obese';
     }
 
-    // ── Save data to sessionStorage ────────────────────
+    // Save data to sessionStorage
     // sessionStorage holds data only for the current browser tab/session.
     // It is cleared automatically when the tab is closed.
     // We store everything as a JSON string.
@@ -865,11 +900,11 @@ if (document.getElementById('bmi-form')) {
     // JSON.stringify() converts the object to a text string for storage
     sessionStorage.setItem('patientData', JSON.stringify(patientData));
 
-    // ── Navigate to the next page ──────────────────────
+    // Navigate to the next page
     window.location.href = 'symptoms.html';
   });
 
-  // ── Helper: mark a field as invalid and show a message ──
+  // Helper: mark a field as invalid and show a message
   function markInvalid(fieldId, message) {
     const field = document.getElementById(fieldId);
     if (!field) return;
@@ -885,7 +920,7 @@ if (document.getElementById('bmi-form')) {
     errSpan.textContent = message;
   }
 
-  // ── Helper: clear the invalid state from a field ─────────
+  // Helper: clear the invalid state from a field
   function markValid(fieldId) {
     const field = document.getElementById(fieldId);
     if (!field) return;
@@ -896,15 +931,7 @@ if (document.getElementById('bmi-form')) {
 }
 
 
-/* ══════════════════════════════════════════════════════════
-   SECTION D — SYMPTOMS PAGE (symptoms.html)
-   ══════════════════════════════════════════════════════════
-   1. Reads patient data from sessionStorage.
-   2. Shows/hides pregnancy symptom based on gender.
-   3. Handles checkbox toggle styling.
-   4. Maps selected symptoms to KATH directorates.
-   5. Saves results to sessionStorage → symptoms.html.
-   ─────────────────────────────────────────────────────── */
+// SECTION D SYMPTOMS PAGE (symptomshtml)
 
 function initSymptomsPage() {
   if (!document.getElementById('symptoms-form')) {
@@ -912,13 +939,10 @@ function initSymptomsPage() {
   }
 
   const stored = sessionStorage.getItem('patientData');
-
-  if (!stored) {
-    window.location.href = 'bmi.html';
-    return;
-  }
-
-  const patient = JSON.parse(stored);
+  const patient = stored ? JSON.parse(stored) : {
+    age: null,
+    gender: '',
+  };
 
   const pregnancyRow = document.getElementById('pregnancy-row');
   if (pregnancyRow) {
@@ -1080,248 +1104,39 @@ if (document.readyState === 'loading') {
   initSymptomsPage();
 }
 
-if (document.getElementById('kath-map')) {
-  const hospitalCenter = [6.7000, -1.6168];
-  const facilityData = [
-    { name: 'KATH Main Campus', coords: [6.7000, -1.6168], type: 'Campus reference point' },
-    { name: 'Emergency Care', coords: [6.6996, -1.6161], type: 'Emergency area' },
-    { name: 'Outpatient / General Care', coords: [6.7006, -1.6174], type: 'Clinic area' },
-    { name: 'Maternity / Obstetrics', coords: [6.7008, -1.6159], type: 'Women & children service' },
-    { name: 'Surgery / Trauma', coords: [6.6992, -1.6167], type: 'Surgical service' },
-    { name: 'Medical Records', coords: [6.7003, -1.6178], type: 'Administrative service' }
-  ];
-
-  const map = L.map('kath-map', { zoomControl: true, scrollWheelZoom: true, attributionControl: true }).setView(hospitalCenter, 15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  const markers = [];
-  facilityData.forEach(function (facility) {
-    const marker = L.marker(facility.coords).addTo(map);
-    marker.bindPopup('<strong>' + facility.name + '</strong><br>' + facility.type);
-    markers.push({ facility, marker });
-  });
-
-  function updateDestinationList(searchTerm) {
-    const select = document.getElementById('destination-select');
-    if (!select) return;
-
-    const normalized = (searchTerm || '').trim().toLowerCase();
-    const filtered = facilityData.filter(function (facility) {
-      return !normalized || facility.name.toLowerCase().includes(normalized) || facility.type.toLowerCase().includes(normalized);
-    });
-
-    select.innerHTML = '<option value="">Select a destination</option>' + filtered.map(function (facility) {
-      return '<option value="' + facility.name + '">' + facility.name + '</option>';
-    }).join('');
-  }
-
-  const facilitySearch = document.getElementById('facility-search');
-  if (facilitySearch) {
-    facilitySearch.addEventListener('input', function (event) {
-      updateDestinationList(event.target.value);
-    });
-  }
-
-  updateDestinationList('');
-
-  const fallbackLocation = { lat: 6.7000, lng: -1.6168 };
-  let userLocation = { ...fallbackLocation };
-  let userMarker = null;
-  let routeLayer = null;
-
-  function setStatus(message) {
-    const statusBox = document.getElementById('location-status');
-    if (statusBox) {
-      statusBox.textContent = message;
-    }
-  }
-
-  function centerOnLocation(lat, lng) {
-    map.setView([lat, lng], 16);
-  }
-
-  userMarker = L.marker([userLocation.lat, userLocation.lng]).addTo(map);
-  userMarker.bindPopup('KATH campus reference location');
-  centerOnLocation(userLocation.lat, userLocation.lng);
-  setStatus('KATH campus reference point is visible. Use “My Location” to update to your current GPS position when permission is granted.');
-
-  function useFallbackLocation(message) {
-    userLocation = { ...fallbackLocation };
-    if (userMarker) {
-      map.removeLayer(userMarker);
-    }
-    userMarker = L.marker([userLocation.lat, userLocation.lng]).addTo(map);
-    userMarker.bindPopup('KATH campus reference location').openPopup();
-    centerOnLocation(userLocation.lat, userLocation.lng);
-    setStatus(message);
-  }
-
-  document.getElementById('use-location-btn')?.addEventListener('click', function () {
-    if (!navigator.geolocation) {
-      useFallbackLocation('Geolocation is not supported on this device, so the KATH campus reference point is shown instead.');
-      return;
-    }
-
-    setStatus('Requesting location access. This is optional and only used with your permission.');
-
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      userLocation = { lat, lng };
-
-      if (userMarker) {
-        map.removeLayer(userMarker);
-      }
-
-      userMarker = L.marker([lat, lng]).addTo(map);
-      userMarker.bindPopup('Your current location').openPopup();
-      centerOnLocation(lat, lng);
-      setStatus('Your current location is now shown on the map.');
-    }, function () {
-      useFallbackLocation('Location permission was not granted, so the KATH campus reference point is shown instead.');
-    }, {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 60000
-    });
-  });
-
-  document.getElementById('center-user-btn')?.addEventListener('click', function () {
-    if (!userLocation) {
-      userLocation = { ...fallbackLocation };
-    }
-    centerOnLocation(userLocation.lat, userLocation.lng);
-    setStatus('Map has been centered on your current location or the KATH campus reference point.');
-  });
-
-  document.getElementById('share-location-btn')?.addEventListener('click', function () {
-    if (!userLocation) {
-      userLocation = { ...fallbackLocation };
-    }
-
-    const shareText = 'My current location: ' + userLocation.lat.toFixed(5) + ', ' + userLocation.lng.toFixed(5) + ' (KATH campus area).';
-
-    if (navigator.share) {
-      navigator.share({
-        title: 'My Location',
-        text: shareText
-      }).catch(function () {
-        setStatus('Share was cancelled.');
-      });
-      return;
-    }
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(shareText).then(function () {
-        setStatus('Your location has been copied to the clipboard.');
-      }).catch(function () {
-        setStatus('Sharing is not available on this device.');
-      });
-      return;
-    }
-
-    setStatus('Use your device sharing options to send your coordinates: ' + shareText);
-  });
-
-  document.getElementById('get-directions-btn')?.addEventListener('click', function () {
-    const destinationSelect = document.getElementById('destination-select');
-    if (!destinationSelect || !destinationSelect.value) {
-      setStatus('Please select a destination to get directions.');
-      return;
-    }
-
-    if (!userLocation) {
-      setStatus('Your location is required to calculate directions. Please tap “My Location” first.');
-      return;
-    }
-
-    const destination = facilityData.find(function (facility) {
-      return facility.name === destinationSelect.value;
-    });
-
-    if (!destination) {
-      setStatus('The selected destination could not be found.');
-      return;
-    }
-
-    const destinationCoords = destination.coords;
-    const url = 'https://router.project-osrm.org/route/v1/foot/' + userLocation.lng + ',' + userLocation.lat + ';' + destinationCoords[1] + ',' + destinationCoords[0] + '?overview=full&geometries=geojson&steps=true';
-
-    fetch(url)
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error('Route request failed');
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        const route = data.routes && data.routes[0];
-        if (!route || !route.legs || !route.legs[0]) {
-          throw new Error('No walking route found.');
-        }
-
-        const pathCoords = route.geometry.coordinates.map(function (point) {
-          return [point[1], point[0]];
-        });
-
-        if (routeLayer) {
-          map.removeLayer(routeLayer);
-        }
-
-        routeLayer = L.polyline(pathCoords, { color: '#d5101a', weight: 6, opacity: 0.9 }).addTo(map);
-        map.fitBounds(routeLayer.getBounds(), { padding: [24, 24] });
-
-        const steps = route.legs[0].steps || [];
-        const directionsPanel = document.getElementById('directions-panel');
-        if (directionsPanel) {
-          directionsPanel.innerHTML = '<h4>Walking Directions</h4>' + steps.map(function (step, index) {
-            const instruction = step.maneuver && step.maneuver.instruction ? step.maneuver.instruction : 'Continue';
-            return '<div class="direction-step"><span class="step-count">' + (index + 1) + '</span><span>' + instruction + '</span></div>';
-          }).join('');
-        }
-
-        setStatus('Walking directions are ready from your current location to ' + destination.name + '.');
-      })
-      .catch(function () {
-        setStatus('Walking directions are unavailable for this route at the moment. Please try another destination or use the map to navigate outdoors.');
-      });
-  });
-}
-
-
-/* ══════════════════════════════════════════════════════════
-   SECTION E — RESULTS PAGE (results.html)
-   ══════════════════════════════════════════════════════════
-   Reads all data from sessionStorage and builds the
-   results display dynamically using JavaScript DOM
-   manipulation.
-   ─────────────────────────────────────────────────────── */
+// SECTION E RESULTS PAGE (resultshtml)
 
 function initResultsPage() {
   if (!document.getElementById('results-container')) {
     return;
   }
 
-  // ── Load stored data ──────────────────────────────────
+  // Load stored data
   const patientRaw   = sessionStorage.getItem('patientData');
   const symptomsRaw  = sessionStorage.getItem('selectedSymptoms');
   const directoratesRaw = sessionStorage.getItem('directorates');
 
-  // Guard: if data is missing, redirect back to start
-  if (!patientRaw || !symptomsRaw || !directoratesRaw) {
+  // Guard: symptom results are still required to show the results page
+  if (!symptomsRaw || !directoratesRaw) {
     window.location.href = 'index.html';
     return;
   }
 
-  const patient     = JSON.parse(patientRaw);
+  const patient     = patientRaw ? JSON.parse(patientRaw) : {
+    title: '',
+    name: 'Patient',
+    age: 'Not provided',
+    gender: 'Not provided',
+    height: 'Not provided',
+    weight: 'Not provided',
+    bmi: null,
+    category: null,
+  };
   const symptoms    = JSON.parse(symptomsRaw);
   const directorates = JSON.parse(directoratesRaw);
   const patientTitle = patient.title || '';
 
-  // ── Friendly symptom labels ───────────────────────────
+  // Friendly symptom labels
   // Map the short value strings back to human-readable text
   const symptomLabels = {
     chest:     '💔 Chest pain / Shortness of breath',
@@ -1335,31 +1150,31 @@ function initResultsPage() {
     eye:       '👁️ Eye problems / Blurred vision',
   };
 
-  // ── BMI category → note and CSS class ────────────────
+  // BMI category → note and CSS class
   // Each category gets an explanatory one-liner and a colour class
   const bmiInfo = {
     Underweight: {
-      note:  'Your BMI suggests you may be underweight. A nutritional assessment may be helpful.',
+      note:  'Your Body Mass Index (BMI) suggests you may be underweight. A nutritional assessment may be helpful.',
       cls:   'bmi-underweight',
     },
     Normal: {
-      note:  'Great! Your BMI is within the healthy range. Keep maintaining a balanced lifestyle.',
+      note:  'Great! Your Body Mass Index (BMI) is within the healthy range. Keep maintaining a balanced lifestyle.',
       cls:   'bmi-normal',
     },
     Overweight: {
-      note:  'Your BMI is slightly above the healthy range. Diet and regular exercise can help.',
+      note:  'Your Body Mass Index (BMI) is slightly above the healthy range. Diet and regular exercise can help.',
       cls:   'bmi-overweight',
     },
     Obese: {
-      note:  'Your BMI indicates obesity. Please consult a healthcare professional for guidance.',
+      note:  'Your Body Mass Index (BMI) indicates obesity. Please consult a healthcare professional for guidance.',
       cls:   'bmi-obese',
     },
   };
 
-  const bmiMeta = bmiInfo[patient.category] || bmiInfo['Normal'];
+  const bmiMeta = patient.category ? bmiInfo[patient.category] : null;
 
-  // ── Build the results HTML ────────────────────────────
-  // We use innerHTML to inject dynamic content into the placeholder div.
+  // Build the results HTML
+  // Build the results HTML.
   const container = document.getElementById('results-container');
 
   // Patient summary strip
@@ -1388,13 +1203,15 @@ function initResultsPage() {
     </div>`;
 
   // BMI result block
-  const bmiHTML = `
-    <div class="result-label">📊 BMI Result</div>
+  const bmiHTML = patient.bmi ? `
+    <div class="result-label">📊 Body Mass Index (BMI) Result</div>
     <div class="result-value">
       ${patient.bmi} kg/m²
       <span class="bmi-badge ${bmiMeta.cls}">${patient.category}</span>
     </div>
-    <p class="bmi-note">💡 ${bmiMeta.note}</p>`;
+    <p class="bmi-note">💡 ${bmiMeta.note}</p>` : `
+    <div class="result-label">📊 Body Mass Index (BMI) Result</div>
+    <p style="color:var(--text-muted);font-size:.9rem;">BMI was skipped. You can calculate it from the BMI page at any time.</p>`;
 
   // Symptoms list (or "None selected")
   let symptomsHTML = '<div class="result-label">🩺 Reported Symptoms</div>';
@@ -1417,7 +1234,7 @@ function initResultsPage() {
   });
   dirHTML += '</div>';
 
-  // Assemble into the container (Full-Width Dashboard Grid)
+  // Show the results.
   container.innerHTML = `
     <div class="card">
       <div class="card-title">👤 Patient Information Summary</div>
@@ -1425,7 +1242,7 @@ function initResultsPage() {
     </div>
     <div class="grid-2col">
       <div class="card">
-        <div class="card-title">⚖️ BMI Assessment</div>
+        <div class="card-title">⚖️ Body Mass Index (BMI) Assessment</div>
         ${bmiHTML}
       </div>
       <div class="card">
@@ -1436,12 +1253,12 @@ function initResultsPage() {
       </div>
     </div>`;
 
-  // ── "Start New Assessment" button ─────────────────────
-  // This button clears all stored data and returns to the home page
+  // "Start New Assessment" button
+  // Start a new assessment.
   const resetBtn = document.getElementById('reset-btn');
   if (resetBtn) {
     resetBtn.addEventListener('click', function () {
-      sessionStorage.clear(); // wipe all stored data for a fresh start
+      sessionStorage.clear();
       window.location.href = 'index.html';
     });
   }
@@ -1455,18 +1272,12 @@ if (document.readyState === 'loading') {
 }
 
 
-/* ══════════════════════════════════════════════════════════
-   SECTION F — FEEDBACK PAGE (feedback.html)
-   ══════════════════════════════════════════════════════════
-   Handles the star-rating widget and feedback form.
-   Since there is no server, we simply show a success
-   message after the user submits.
-   ─────────────────────────────────────────────────────── */
+// SECTION F FEEDBACK PAGE (feedbackhtml)
 
 if (document.getElementById('feedback-form')) {
 
-  // ── Star Rating Widget ────────────────────────────────
-  let selectedRating = 0; // stores the current star rating (1-5)
+  // Star Rating Widget
+  let selectedRating = 0;
   const stars = document.querySelectorAll('.star');
 
   stars.forEach(function (star) {
@@ -1498,7 +1309,7 @@ if (document.getElementById('feedback-form')) {
     });
   }
 
-  // ── Feedback Form Submission ──────────────────────────
+  // Feedback Form Submission
   const feedbackForm = document.getElementById('feedback-form');
   const patientNameInput = document.getElementById('patient-name');
 
