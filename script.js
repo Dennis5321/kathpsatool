@@ -484,12 +484,13 @@ initAboutDirectorates();
   function updateDateTime() {
     const now = new Date();
     
-    // Format time (HH:MM)
-    const hours = String(now.getHours()).padStart(2, '0');
+    // Format time (12-hour clock)
+    const hours = now.getHours() % 12 || 12;
     const minutes = String(now.getMinutes()).padStart(2, '0');
+    const period = now.getHours() < 12 ? 'AM' : 'PM';
     const timeDisplay = document.getElementById('time-display');
     if (timeDisplay) {
-      timeDisplay.textContent = `${hours}:${minutes}`;
+      timeDisplay.textContent = `${hours}:${minutes} ${period}`;
     }
 
     // Format date (Day, Month Date, Year)

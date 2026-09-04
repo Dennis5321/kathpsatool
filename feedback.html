@@ -337,10 +337,11 @@
     (function() {
       function updateDateTime() {
         const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
+        const hours = now.getHours() % 12 || 12;
         const minutes = String(now.getMinutes()).padStart(2, '0');
+        const period = now.getHours() < 12 ? 'AM' : 'PM';
         const timeDisplay = document.getElementById('time-display');
-        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes}`;
+        if (timeDisplay) timeDisplay.textContent = `${hours}:${minutes} ${period}`;
         const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
         const dateStr = now.toLocaleDateString('en-US', options);
         const dateDisplay = document.getElementById('date-display');
