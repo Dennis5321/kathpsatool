@@ -16,6 +16,344 @@ const KATH_DIRECTORATES = {
   traumatologyOrthopaedics: '🦿 Traumatology & Orthopaedics'
 };
 
+const ASSESSMENT_STORAGE_KEYS = [
+  'patientData',
+  'selectedSymptoms',
+  'customSymptoms',
+  'directorates',
+  'symptomRecommendation'
+];
+
+function clearAssessmentState() {
+  ASSESSMENT_STORAGE_KEYS.forEach(function (key) {
+    sessionStorage.removeItem(key);
+  });
+}
+
+function isLandingPage() {
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  return page === 'index.html' || page === '';
+}
+
+if (isLandingPage()) {
+  clearAssessmentState();
+}
+
+function normalizeSymptomKey(value) {
+  return String(value || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+function buildDirectorateRecommendation(selectedSymptoms, patientAge) {
+  const normalizedSymptoms = (selectedSymptoms || []).map(normalizeSymptomKey).filter(Boolean);
+
+  if (!normalizedSymptoms.length) {
+    return {
+      message: 'Please select at least one symptom before generating a recommendation.',
+      recommendations: []
+    };
+  }
+
+  const directorateMatches = new Map();
+
+  function addMatch(symptomKey, directorateName, reasonText, weight) {
+    const score = Number(weight) || 1;
+    const existing = directorateMatches.get(directorateName) || {
+      score: 0,
+      reasons: new Set(),
+      symptoms: new Set()
+    };
+
+    existing.score += score;
+    existing.reasons.add(reasonText);
+    existing.symptoms.add(symptomKey);
+    directorateMatches.set(directorateName, existing);
+  }
+
+  const symptomMatches = {
+    chest: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Chest pain or breathing difficulty can be urgent and may be appropriate for Emergency Medicine.', weight: 3 },
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Chest symptoms may also require medical review within Internal Medicine.', weight: 2 }
+    ],
+    shortnessofbreath: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Breathing difficulty may warrant early emergency assessment.', weight: 3 },
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Breathing or chest-related symptoms may be reviewed by Internal Medicine.', weight: 2 }
+    ],
+    wheeze: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Wheezing can be related to breathing or asthma-related concerns and may be assessed medically.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Wheezing with significant discomfort may require urgent review in Emergency Medicine.', weight: 2 }
+    ],
+    cough: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Persistent cough often falls under medical review in Internal Medicine.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'A cough can also be appropriately assessed through Family Medicine.', weight: 1 }
+    ],
+    sorethroat: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Sore throat is commonly assessed in the Eye, Ear, Nose & Throat (EENT) department.', weight: 3 }
+    ],
+    runnynose: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Nasal symptoms, congestion, and related discomfort are often managed in EENT.', weight: 2 }
+    ],
+    nasalcongestion: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Nasal congestion is commonly assessed in EENT.', weight: 2 }
+    ],
+    fever: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Fever may warrant medical review in Internal Medicine, especially with other symptoms.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Fever can also be assessed through Family Medicine depending on severity.', weight: 1 }
+    ],
+    chills: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Chills with fever or systemic symptoms may need medical assessment in Internal Medicine.', weight: 2 }
+    ],
+    fatigue: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Persistent fatigue is often a suitable starting point in Family Medicine.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Fatigue may also require evaluation through Internal Medicine if it is ongoing or unexplained.', weight: 1 }
+    ],
+    dizziness: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Dizziness may be urgent depending on severity and should be assessed promptly.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Recurring dizziness may be reviewed through Family Medicine.', weight: 1 }
+    ],
+    fainting: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Fainting or loss of consciousness may require urgent emergency assessment.', weight: 3 }
+    ],
+    headache: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Headache may be reviewed in Internal Medicine depending on pattern and severity.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Severe or sudden headache may require emergency review.', weight: 2 }
+    ],
+    memory: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Memory problems or confusion often warrant medical evaluation in Internal Medicine.', weight: 2 }
+    ],
+    balance: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Balance or walking difficulties can be medically assessed in Internal Medicine.', weight: 2 }
+    ],
+    numbness: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Numbness or tingling may require a medical assessment to determine the cause.', weight: 2 }
+    ],
+    seizure: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Seizures are urgent and may need immediate emergency review.', weight: 4 }
+    ],
+    abdominalpain: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Abdominal pain can be appropriately reviewed in Internal Medicine.', weight: 3 },
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Severe abdominal pain may require emergency assessment.', weight: 2 }
+    ],
+    nausea: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Nausea and vomiting may be assessed in Internal Medicine.', weight: 2 }
+    ],
+    diarrhea: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Diarrhea and related gut symptoms are often best reviewed in Internal Medicine.', weight: 2 }
+    ],
+    constipation: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Constipation and digestive symptoms may be assessed in Internal Medicine.', weight: 1 }
+    ],
+    heartburn: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Heartburn and indigestion can be medically evaluated in Internal Medicine.', weight: 2 }
+    ],
+    bloating: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Bloating or stomach fullness may need evaluation in Internal Medicine.', weight: 2 }
+    ],
+    backpain: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Back pain often begins with evaluation in Traumatology & Orthopaedics.', weight: 2 }
+    ],
+    jointpain: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Joint pain and musculoskeletal concerns are commonly reviewed in Traumatology & Orthopaedics.', weight: 2 }
+    ],
+    musclepain: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Muscle pain and movement-related discomfort may be evaluated in Orthopaedics.', weight: 2 }
+    ],
+    neckpain: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Neck pain or musculoskeletal strain may be reviewed in Traumatology & Orthopaedics.', weight: 1 }
+    ],
+    injury: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Injury, fracture, or musculoskeletal trauma is appropriate for Traumatology & Orthopaedics.', weight: 4 }
+    ],
+    fracture: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Fracture-related symptoms are commonly routed to Traumatology & Orthopaedics.', weight: 4 }
+    ],
+    openwound: [
+      { directorate: KATH_DIRECTORATES.traumatologyOrthopaedics, reason: 'Open wounds and soft-tissue injuries are often assessed in Traumatology & Orthopaedics.', weight: 3 }
+    ],
+    skin: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Skin rash or allergic symptoms are often first reviewed in Family Medicine.', weight: 2 }
+    ],
+    itching: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Itching and skin irritation may be appropriate for Family Medicine review.', weight: 2 }
+    ],
+    swelling: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Swelling or skin redness can be appropriate for initial assessment through Family Medicine.', weight: 1 }
+    ],
+    lump: [
+      { directorate: KATH_DIRECTORATES.oncology, reason: 'An unusual lump or swelling may benefit from expert oncology review.', weight: 3 },
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'A new lump may also be reviewed in Family Medicine as a first step.', weight: 1 }
+    ],
+    burnurine: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Burning when urinating may need general medical assessment and further investigation.', weight: 2 },
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Urinary symptoms may also be reviewed in Family Medicine depending on presentation.', weight: 1 }
+    ],
+    frequenturine: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Frequent urination can point to urinary or systemic issues that merit medical review.', weight: 2 }
+    ],
+    bloodurine: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Blood in the urine often requires a prompt clinical assessment and may need specialist review.', weight: 3 }
+    ],
+    urinepain: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Pain during urination or lower abdominal urinary symptoms may be medically evaluated.', weight: 2 }
+    ],
+    pregnancy: [
+      { directorate: KATH_DIRECTORATES.obstetricsGynaecology, reason: 'Pregnancy-related symptoms are appropriately assessed in Obstetrics & Gynaecology.', weight: 4 }
+    ],
+    eye: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Eye pain or blurred vision are commonly reviewed in the EENT department.', weight: 3 }
+    ],
+    redeye: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Red eye or irritation is commonly assessed in EENT.', weight: 2 }
+    ],
+    earpain: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Ear pain is typically reviewed in EENT.', weight: 3 }
+    ],
+    hearingloss: [
+      { directorate: KATH_DIRECTORATES.eent, reason: 'Hearing problems or ringing in the ears fit the EENT speciality.', weight: 2 }
+    ],
+    mental: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Persistent sadness or emotional distress may be an appropriate first step in Family Medicine.', weight: 2 }
+    ],
+    anxiety: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Anxiety symptoms may be reviewed in Family Medicine as a starting point for assessment.', weight: 2 }
+    ],
+    sleep: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Sleep problems are often reviewed in Family Medicine before specialist input.', weight: 1 }
+    ],
+    stress: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Stress or emotional distress can be assessed through Family Medicine.', weight: 1 }
+    ],
+    dental: [
+      { directorate: KATH_DIRECTORATES.oralHealth, reason: 'Tooth pain and dental symptoms are suited to Oral Health review.', weight: 3 }
+    ],
+    weightloss: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Unexplained weight loss can indicate an underlying medical issue and merits clinical assessment.', weight: 2 }
+    ],
+    appetite: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Reduced appetite or poor eating can be assessed in Internal Medicine.', weight: 1 }
+    ],
+    bodyaches: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Body aches or general malaise may be appropriate for medical review.', weight: 1 }
+    ],
+    weakness: [
+      { directorate: KATH_DIRECTORATES.internalMedicine, reason: 'Weakness should be reviewed medically to determine its cause.', weight: 1 }
+    ],
+    chesttightness: [
+      { directorate: KATH_DIRECTORATES.emergencyMedicine, reason: 'Chest tightness can be urgent and may need emergency review.', weight: 3 }
+    ],
+    allergy: [
+      { directorate: KATH_DIRECTORATES.familyMedicine, reason: 'Allergic symptoms are often first reviewed in Family Medicine.', weight: 2 }
+    ]
+  };
+
+  normalizedSymptoms.forEach(function (symptomKey) {
+    const matches = symptomMatches[symptomKey] || [];
+    if (!matches.length) {
+      return;
+    }
+
+    matches.forEach(function (match) {
+      addMatch(symptomKey, match.directorate, match.reason, match.weight);
+    });
+  });
+
+  if (!directorateMatches.size) {
+    return {
+      message: 'No specific KATH directorate match was identified for the selected symptoms. A general consultation may be a suitable starting point.',
+      recommendations: [
+        {
+          directorate: KATH_DIRECTORATES.familyMedicine,
+          reason: 'Your symptoms do not clearly point to one specialist area, so Family Medicine may be a helpful starting point.',
+          score: 1,
+          symptoms: []
+        }
+      ]
+    };
+  }
+
+  const recommendations = Array.from(directorateMatches.entries())
+    .map(function ([directorate, entry]) {
+      const symptoms = Array.from(entry.symptoms)
+        .map(function (symptomKey) {
+          const symptomLabelMap = {
+            chest: 'Chest pain / Shortness of breath',
+            shortnessofbreath: 'Shortness of breath',
+            wheeze: 'Wheezing',
+            cough: 'Cough',
+            sorethroat: 'Sore throat',
+            runnynose: 'Runny nose / nasal congestion',
+            nasalcongestion: 'Nasal congestion',
+            fever: 'Fever / chills',
+            chills: 'Chills',
+            fatigue: 'Fatigue / weakness',
+            dizziness: 'Dizziness / feeling faint',
+            fainting: 'Fainting',
+            headache: 'Headache',
+            memory: 'Memory problems / confusion',
+            balance: 'Balance problems',
+            numbness: 'Numbness / tingling',
+            seizure: 'Seizure',
+            abdominalpain: 'Abdominal pain',
+            nausea: 'Nausea / vomiting',
+            diarrhea: 'Diarrhea',
+            constipation: 'Constipation',
+            heartburn: 'Heartburn / indigestion',
+            bloating: 'Bloating / stomach fullness',
+            backpain: 'Back pain',
+            jointpain: 'Joint pain',
+            musclepain: 'Muscle pain',
+            neckpain: 'Neck pain',
+            injury: 'Injury / fracture / open wound',
+            fracture: 'Fracture',
+            openwound: 'Open wound',
+            skin: 'Skin rash / allergic reaction',
+            itching: 'Itching / skin irritation',
+            swelling: 'Swelling / redness',
+            lump: 'Unusual lump / swollen gland',
+            burnurine: 'Burning when urinating',
+            frequenturine: 'Frequent urination',
+            bloodurine: 'Blood in urine',
+            urinepain: 'Pain when urinating',
+            pregnancy: 'Pregnancy-related symptoms',
+            eye: 'Eye pain / blurred vision',
+            redeye: 'Red eye / eye irritation',
+            earpain: 'Ear pain',
+            hearingloss: 'Hearing loss / ringing in the ears',
+            mental: 'Persistent sadness / depression',
+            anxiety: 'Anxiety / panic attacks',
+            sleep: 'Sleep problems',
+            stress: 'Stress / emotional distress',
+            dental: 'Toothache / dental pain',
+            weightloss: 'Unexplained weight loss',
+            appetite: 'Poor appetite',
+            bodyaches: 'Body aches',
+            weakness: 'Weakness',
+            chesttightness: 'Chest tightness',
+            allergy: 'Allergic symptoms'
+          };
+
+          return symptomLabelMap[symptomKey] || symptomKey;
+        })
+        .sort();
+
+      const reason = Array.from(entry.reasons).join(' ');
+
+      return {
+        directorate: directorate,
+        score: entry.score,
+        reason: reason || 'This department may be appropriate based on your symptoms.',
+        symptoms: symptoms
+      };
+    })
+    .sort(function (a, b) {
+      return b.score - a.score;
+    });
+
+  return {
+    message: 'Based on the symptoms selected, these KATH departments may be the most relevant starting points.',
+    recommendations: recommendations
+  };
+}
+
 function initAboutDirectorates() {
   const directorateGrid = document.getElementById('directorate-list');
   if (!directorateGrid) return;
@@ -947,6 +1285,7 @@ function initSymptomsPage() {
 
     const selectedSymptoms = [];
     const seenSymptoms = new Set();
+    const selectionMessage = document.getElementById('symptom-selection-message');
 
     function addSymptom(value) {
       const normalized = String(value || '').trim();
@@ -968,50 +1307,84 @@ function initSymptomsPage() {
       addSymptom(rawValue);
     });
 
-    const directorateSet = new Set();
-
-    selectedSymptoms.forEach(function (symptom) {
-      const normalizedSymptom = symptom.toLowerCase();
-      switch (normalizedSymptom) {
-        case 'chest':
-          directorateSet.add(KATH_DIRECTORATES.emergencyMedicine);
-          break;
-        case 'fever':
-          if (patient.age < 18) {
-            directorateSet.add(KATH_DIRECTORATES.childHealth);
-          } else {
-            directorateSet.add(KATH_DIRECTORATES.internalMedicine);
-          }
-          break;
-        case 'pregnancy':
-          directorateSet.add(KATH_DIRECTORATES.obstetricsGynaecology);
-          break;
-        case 'lump':
-          directorateSet.add(KATH_DIRECTORATES.oncology);
-          break;
-        case 'injury':
-          directorateSet.add(KATH_DIRECTORATES.traumatologyOrthopaedics);
-          break;
-        case 'mental':
-          directorateSet.add(KATH_DIRECTORATES.familyMedicine);
-          break;
-        case 'skin':
-          directorateSet.add(KATH_DIRECTORATES.familyMedicine);
-          break;
-        case 'dental':
-          directorateSet.add(KATH_DIRECTORATES.oralHealth);
-          break;
-        case 'eye':
-          directorateSet.add(KATH_DIRECTORATES.eent);
-          break;
-        default:
-          break;
+    if (!selectedSymptoms.length) {
+      if (selectionMessage) {
+        selectionMessage.style.display = 'flex';
+      } else {
+        window.alert('Please select at least one symptom before continuing to the results.');
       }
-    });
+      return;
+    }
+
+    if (selectionMessage) {
+      selectionMessage.style.display = 'none';
+    }
+
+    const recommendation = buildDirectorateRecommendation(selectedSymptoms, patient.age);
+    const directorateSet = new Set((recommendation.recommendations || []).map(function (item) {
+      return item.directorate;
+    }));
+
+    const knownSymptomKeys = {
+      chest: true,
+      fever: true,
+      fatigue: true,
+      dizziness: true,
+      weightloss: true,
+      appetite: true,
+      pregnancy: true,
+      cough: true,
+      sorethroat: true,
+      runnynose: true,
+      wheeze: true,
+      abdominalpain: true,
+      nausea: true,
+      diarrhea: true,
+      constipation: true,
+      heartburn: true,
+      bloating: true,
+      headache: true,
+      backpain: true,
+      jointpain: true,
+      musclepain: true,
+      neckpain: true,
+      fainting: true,
+      numbness: true,
+      seizure: true,
+      balance: true,
+      memory: true,
+      itching: true,
+      swelling: true,
+      skin: true,
+      lump: true,
+      burnurine: true,
+      frequenturine: true,
+      bloodurine: true,
+      urinepain: true,
+      eye: true,
+      redeye: true,
+      earpain: true,
+      hearingloss: true,
+      mental: true,
+      anxiety: true,
+      sleep: true,
+      stress: true,
+      injury: true,
+      dental: true,
+      fracture: true,
+      openwound: true,
+      shortnessofbreath: true,
+      nasalcongestion: true,
+      chills: true,
+      weakness: true,
+      bodyaches: true,
+      chesttightness: true,
+      allergy: true
+    };
 
     const customSymptoms = selectedSymptoms.filter(function (symptom) {
-      const lower = symptom.toLowerCase();
-      return !['chest', 'fever', 'pregnancy', 'lump', 'injury', 'mental', 'skin', 'dental', 'eye'].includes(lower);
+      const lower = normalizeSymptomKey(symptom);
+      return !knownSymptomKeys[lower];
     });
 
     let directorates;
@@ -1024,6 +1397,7 @@ function initSymptomsPage() {
     sessionStorage.setItem('selectedSymptoms', JSON.stringify(selectedSymptoms));
     sessionStorage.setItem('customSymptoms', JSON.stringify(customSymptoms));
     sessionStorage.setItem('directorates', JSON.stringify(directorates));
+    sessionStorage.setItem('symptomRecommendation', JSON.stringify(recommendation));
 
     window.location.href = 'results.html';
   });
@@ -1046,10 +1420,10 @@ function initResultsPage() {
   const patientRaw   = sessionStorage.getItem('patientData');
   const symptomsRaw  = sessionStorage.getItem('selectedSymptoms');
   const directoratesRaw = sessionStorage.getItem('directorates');
+  const recommendationRaw = sessionStorage.getItem('symptomRecommendation');
 
-  // Guard: symptom results are still required to show the results page
-  if (!symptomsRaw || !directoratesRaw) {
-    window.location.href = 'index.html';
+  if (!symptomsRaw) {
+    window.location.href = 'symptoms.html';
     return;
   }
 
@@ -1064,21 +1438,62 @@ function initResultsPage() {
     category: null,
   };
   const symptoms    = JSON.parse(symptomsRaw);
-  const directorates = JSON.parse(directoratesRaw);
+  const recommendation = recommendationRaw ? JSON.parse(recommendationRaw) : buildDirectorateRecommendation(symptoms, patient.age);
+  const directorates = directoratesRaw ? JSON.parse(directoratesRaw) : (recommendation.recommendations || []).map(function (item) {
+    return item.directorate;
+  });
   const patientTitle = patient.title || '';
 
   // Friendly symptom labels
   // Map the short value strings back to human-readable text
   const symptomLabels = {
-    chest:     '💔 Chest pain / Shortness of breath',
-    fever:     '🌡️ High fever / Body aches',
-    pregnancy: '🤰 Pregnancy-related / Abdominal pain',
-    lump:      '🔍 Unusual lump / Unexplained weight loss',
-    injury:    '🩹 Injury / Fracture / Open wound',
-    mental:    '😔 Persistent sadness / Anxiety / Sleep problems',
-    skin:      '🌿 Skin rash / Allergic reaction',
-    dental:    '🦷 Toothache / Dental pain',
-    eye:       '👁️ Eye problems / Blurred vision',
+    chest: '💔 Chest pain / Shortness of breath',
+    fever: '🌡️ Fever / Chills',
+    fatigue: '😴 Fatigue / Weakness',
+    dizziness: '🌀 Dizziness / Feeling faint',
+    weightloss: '⚖️ Unexplained weight loss',
+    appetite: '🍽️ Poor appetite / Loss of appetite',
+    pregnancy: '🤰 Pregnancy-related symptoms',
+    cough: '🤧 Cough',
+    sorethroat: '😷 Sore throat',
+    runnynose: '💨 Runny nose / Nasal congestion',
+    wheeze: '🫁 Wheezing / Breathing tightness',
+    abdominalpain: '🩺 Abdominal pain',
+    nausea: '🤢 Nausea / Vomiting',
+    diarrhea: '🚽 Diarrhea',
+    constipation: '🧻 Constipation',
+    heartburn: '🔥 Heartburn / Indigestion',
+    bloating: '🫃 Bloating / Stomach fullness',
+    headache: '🤕 Headache',
+    backpain: '📍 Back pain',
+    jointpain: '🦵 Joint pain',
+    musclepain: '💪 Muscle pain',
+    neckpain: '🩺 Neck pain',
+    fainting: '🧠 Fainting / Loss of consciousness',
+    numbness: '👣 Numbness / Tingling',
+    seizure: '⚡ Seizure / Fits',
+    balance: '🚶 Difficulty walking / Balance problems',
+    memory: '🧠 Memory problems / Confusion',
+    itching: '🩹 Itching / Skin irritation',
+    swelling: '💧 Swelling / Redness',
+    skin: '🌿 Skin rash / Allergic reaction',
+    lump: '🔍 Unusual lump / Swollen gland',
+    burnurine: '🚰 Burning when urinating',
+    frequenturine: '💧 Frequent urination',
+    bloodurine: '🩸 Blood in urine',
+    urinepain: '🧍 Lower abdominal pain when urinating',
+    eye: '👁️ Eye pain / Blurred vision',
+    redeye: '🔴 Red eye / Eye irritation',
+    earpain: '👂 Ear pain',
+    hearingloss: '🎧 Hearing loss / Ringing in the ears',
+    mental: '😔 Persistent sadness / Depression',
+    anxiety: '😟 Anxiety / Panic attacks',
+    sleep: '😴 Sleep problems',
+    stress: '🧘 Stress / Emotional distress',
+    injury: '🩹 Injury / Fracture / Open wound',
+    dental: '🦷 Toothache / Dental pain',
+    fracture: '🩹 Fracture',
+    openwound: '🩹 Open wound',
   };
 
   // BMI category → note and CSS class
@@ -1157,13 +1572,40 @@ function initResultsPage() {
     symptomsHTML += '</div>';
   }
 
-  // Directorates
+  // Directorates / recommended starting point
+  const recommendationItems = (recommendation.recommendations && recommendation.recommendations.length)
+    ? recommendation.recommendations
+    : [{ directorate: '🏨 General OPD Consultation', reason: 'Please select at least one symptom to generate a more specific starting-point recommendation.', symptoms: [] }];
+
+  let recommendationHTML = `
+    <div class="result-label">🩺 Recommended Starting Point</div>
+    <p style="color:var(--text-mid);font-size:.92rem;line-height:1.6;margin:0.35rem 0 1rem;">
+      Based on the symptoms you selected, you may consider starting at:
+    </p>
+    <div class="directorate-list">`;
+
+  recommendationItems.forEach(function (item) {
+    recommendationHTML += `
+      <div class="directorate-tag" style="display:block;">
+        <strong>${item.directorate}</strong>
+        <div style="font-size:.82rem;color:var(--text-mid);margin-top:.35rem;line-height:1.5;">${item.reason}</div>
+        ${item.symptoms && item.symptoms.length ? `<div style="font-size:.78rem;color:var(--text-muted);margin-top:.5rem;line-height:1.5;"><strong>Symptoms linked:</strong> ${item.symptoms.join(', ')}</div>` : ''}
+      </div>`;
+  });
+
+  recommendationHTML += '</div>';
+
   let dirHTML = '<div class="result-label">🏥 Suggested Directorate(s) to Visit</div>';
   dirHTML += '<div class="directorate-list">';
   directorates.forEach(function (d) {
     dirHTML += `<div class="directorate-tag">${d}</div>`;
   });
   dirHTML += '</div>';
+
+  const startingPointDisclaimer = `
+    <div style="margin-top:1rem; padding:.85rem 1rem; border-radius:var(--radius-sm); background:#fff8f8; border:1.5px solid var(--border); color:var(--text-mid); font-size:.85rem; line-height:1.6;">
+      <strong>Starting-point note:</strong> This recommendation is only a guide to help you begin seeking care and does not replace assessment by a qualified healthcare professional.
+    </div>`;
 
   // Show the results.
   container.innerHTML = `
@@ -1177,8 +1619,11 @@ function initResultsPage() {
         ${bmiHTML}
       </div>
       <div class="card">
-        <div class="card-title">🩻 Clinical Routing &amp; Directorate(s)</div>
+        <div class="card-title">🩻 Clinical Routing &amp; Directorate Guidance</div>
         ${symptomsHTML}
+        <hr class="divider">
+        ${recommendationHTML}
+        ${startingPointDisclaimer}
         <hr class="divider">
         ${dirHTML}
       </div>

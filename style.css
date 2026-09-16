@@ -510,13 +510,35 @@ input.invalid { border-color: var(--primary); }
 /* 12 Symptom Checkbox Items (Page Responsive Grid) */
 .symptom-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.3rem;
   width: 100%;
   min-width: 0;
 }
 @media (max-width: 480px) {
   .symptom-list { grid-template-columns: 1fr; }
+}
+
+.symptom-group {
+  background: #fffaf9;
+  border: 1.8px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0.8rem;
+  min-width: 0;
+}
+
+.symptom-group h3 {
+  margin: 0 0 0.85rem;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.symptom-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .symptom-item {
@@ -526,7 +548,7 @@ input.invalid { border-color: var(--primary); }
   background: var(--white);
   border: 2px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 1rem 1.25rem;
+  padding: 0.8rem 1rem;
   cursor: pointer;
   transition: border-color var(--transition), background var(--transition), transform var(--transition);
 }
@@ -542,7 +564,7 @@ input.invalid { border-color: var(--primary); }
 }
 .symptom-item label {
   margin: 0; cursor: pointer;
-  font-weight: 600; font-size: 0.98rem;
+  font-weight: 600; font-size: 0.95rem;
   display: flex; align-items: center; gap: 0.5rem;
 }
 .symptom-item.checked {

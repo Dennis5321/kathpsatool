@@ -162,61 +162,251 @@
         <!-- idsymptoms-form is detected by scriptjs -->
         <form id="symptoms-form" novalidate>
 
+          <div id="symptom-selection-message" class="alert alert-error" style="display:none; margin-bottom:1rem;">
+            Please select at least one symptom before continuing to the results.
+          </div>
+
           <!-- Responsive Multi-Column Grid of Symptoms across full page -->
           <div class="symptom-list">
 
-            <!-- SYMPTOM 1: Chest pain / shortness of breath -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-chest" name="symptom" value="chest" />
-              <label for="s-chest">💔 Chest pain / Shortness of breath</label>
+            <div class="symptom-group">
+              <h3>General</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-fever" name="symptom" value="fever" />
+                  <label for="s-fever">🌡️ Fever / Chills</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-fatigue" name="symptom" value="fatigue" />
+                  <label for="s-fatigue">😴 Fatigue / Weakness</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-dizziness" name="symptom" value="dizziness" />
+                  <label for="s-dizziness">🌀 Dizziness / Feeling faint</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-weightloss" name="symptom" value="weightloss" />
+                  <label for="s-weightloss">⚖️ Unexplained weight loss</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-appetite" name="symptom" value="appetite" />
+                  <label for="s-appetite">🍽️ Poor appetite / Loss of appetite</label>
+                </div>
+                <div class="symptom-item d-none" id="pregnancy-row">
+                  <input type="checkbox" id="s-pregnancy" name="symptom" value="pregnancy" />
+                  <label for="s-pregnancy">🤰 Pregnancy-related symptoms</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 2: High fever / body aches -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-fever" name="symptom" value="fever" />
-              <label for="s-fever">🌡️ High fever / Body aches</label>
+            <div class="symptom-group">
+              <h3>Respiratory</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-chest" name="symptom" value="chest" />
+                  <label for="s-chest">💔 Chest pain / Shortness of breath</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-cough" name="symptom" value="cough" />
+                  <label for="s-cough">🤧 Cough</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-sorethroat" name="symptom" value="sorethroat" />
+                  <label for="s-sorethroat">😷 Sore throat</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-runny-nose" name="symptom" value="runnynose" />
+                  <label for="s-runny-nose">💨 Runny nose / Nasal congestion</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-wheeze" name="symptom" value="wheeze" />
+                  <label for="s-wheeze">🫁 Wheezing / Breathing tightness</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 3: Pregnancy / abdominal pain hidden for males (scriptjs shows it for females) -->
-            <div class="symptom-item d-none" id="pregnancy-row">
-              <input type="checkbox" id="s-pregnancy" name="symptom" value="pregnancy" />
-              <label for="s-pregnancy">🤰 Pregnancy-related / Abdominal pain</label>
+            <div class="symptom-group">
+              <h3>Digestive</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-abdominal-pain" name="symptom" value="abdominalpain" />
+                  <label for="s-abdominal-pain">🩺 Abdominal pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-nausea" name="symptom" value="nausea" />
+                  <label for="s-nausea">🤢 Nausea / Vomiting</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-diarrhea" name="symptom" value="diarrhea" />
+                  <label for="s-diarrhea">🚽 Diarrhea</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-constipation" name="symptom" value="constipation" />
+                  <label for="s-constipation">🧻 Constipation</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-heartburn" name="symptom" value="heartburn" />
+                  <label for="s-heartburn">🔥 Heartburn / Indigestion</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-bloating" name="symptom" value="bloating" />
+                  <label for="s-bloating">🫃 Bloating / Stomach fullness</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 4: Unusual lump / unexplained weight loss -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-lump" name="symptom" value="lump" />
-              <label for="s-lump">🔍 Unusual lump / Unexplained weight loss</label>
+            <div class="symptom-group">
+              <h3>Pain</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-headache" name="symptom" value="headache" />
+                  <label for="s-headache">🤕 Headache</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-backpain" name="symptom" value="backpain" />
+                  <label for="s-backpain">📍 Back pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-jointpain" name="symptom" value="jointpain" />
+                  <label for="s-jointpain">🦵 Joint pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-musclepain" name="symptom" value="musclepain" />
+                  <label for="s-musclepain">💪 Muscle pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-neckpain" name="symptom" value="neckpain" />
+                  <label for="s-neckpain">🩺 Neck pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-dental" name="symptom" value="dental" />
+                  <label for="s-dental">🦷 Toothache / Dental pain</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 5: Injury / fracture / open wound -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-injury" name="symptom" value="injury" />
-              <label for="s-injury">🩹 Injury / Fracture / Open wound</label>
+            <div class="symptom-group">
+              <h3>Neurological</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-fainting" name="symptom" value="fainting" />
+                  <label for="s-fainting">🧠 Fainting / Loss of consciousness</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-numbness" name="symptom" value="numbness" />
+                  <label for="s-numbness">👣 Numbness / Tingling</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-seizure" name="symptom" value="seizure" />
+                  <label for="s-seizure">⚡ Seizure / Fits</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-balance" name="symptom" value="balance" />
+                  <label for="s-balance">🚶 Difficulty walking / Balance problems</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-memory" name="symptom" value="memory" />
+                  <label for="s-memory">🧠 Memory problems / Confusion</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 6: Sadness / anxiety / sleep problems -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-mental" name="symptom" value="mental" />
-              <label for="s-mental">😔 Persistent sadness / Anxiety / Sleep problems</label>
+            <div class="symptom-group">
+              <h3>Skin</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-skin" name="symptom" value="skin" />
+                  <label for="s-skin">🌿 Skin rash / Allergic reaction</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-itching" name="symptom" value="itching" />
+                  <label for="s-itching">🩹 Itching / Skin irritation</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-swelling" name="symptom" value="swelling" />
+                  <label for="s-swelling">💧 Swelling / Redness</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-lump" name="symptom" value="lump" />
+                  <label for="s-lump">🔍 Unusual lump / Swollen gland</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 7: Skin rash / allergic reaction -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-skin" name="symptom" value="skin" />
-              <label for="s-skin">🌿 Skin rash / Allergic reaction</label>
+            <div class="symptom-group">
+              <h3>Urinary</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-burn-urine" name="symptom" value="burnurine" />
+                  <label for="s-burn-urine">🚰 Burning when urinating</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-frequent-urine" name="symptom" value="frequenturine" />
+                  <label for="s-frequent-urine">💧 Frequent urination</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-blood-urine" name="symptom" value="bloodurine" />
+                  <label for="s-blood-urine">🩸 Blood in urine</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-urine-pain" name="symptom" value="urinepain" />
+                  <label for="s-urine-pain">🧍 Lower abdominal pain when urinating</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 8: Toothache / dental pain -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-dental" name="symptom" value="dental" />
-              <label for="s-dental">🦷 Toothache / Dental pain</label>
+            <div class="symptom-group">
+              <h3>Eye &amp; Ear</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-eye" name="symptom" value="eye" />
+                  <label for="s-eye">👁️ Eye pain / Blurred vision</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-redeye" name="symptom" value="redeye" />
+                  <label for="s-redeye">🔴 Red eye / Eye irritation</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-earpain" name="symptom" value="earpain" />
+                  <label for="s-earpain">👂 Ear pain</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-hearingloss" name="symptom" value="hearingloss" />
+                  <label for="s-hearingloss">🎧 Hearing loss / Ringing in the ears</label>
+                </div>
+              </div>
             </div>
 
-            <!-- SYMPTOM 9: Eye problems / blurred vision -->
-            <div class="symptom-item">
-              <input type="checkbox" id="s-eye" name="symptom" value="eye" />
-              <label for="s-eye">👁️ Eye problems / Blurred vision</label>
+            <div class="symptom-group">
+              <h3>Mental / Emotional</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-mental" name="symptom" value="mental" />
+                  <label for="s-mental">😔 Persistent sadness / Depression</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-anxiety" name="symptom" value="anxiety" />
+                  <label for="s-anxiety">😟 Anxiety / Panic attacks</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-sleep" name="symptom" value="sleep" />
+                  <label for="s-sleep">😴 Sleep problems</label>
+                </div>
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-stress" name="symptom" value="stress" />
+                  <label for="s-stress">🧘 Stress / Emotional distress</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="symptom-group">
+              <h3>Other</h3>
+              <div class="symptom-group-items">
+                <div class="symptom-item">
+                  <input type="checkbox" id="s-injury" name="symptom" value="injury" />
+                  <label for="s-injury">🩹 Injury / Fracture / Open wound</label>
+                </div>
+              </div>
             </div>
 
           </div><!-- /symptom-list -->
