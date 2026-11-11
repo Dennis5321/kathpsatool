@@ -1287,6 +1287,7 @@ if (document.getElementById('feedback-form')) {
     }
     if (submitButton) submitButton.disabled = true;
 
+    let serviceErrorMessage = '';
     try {
       const response = await fetch('https://formsubmit.co/ajax/boatengdennis30@gmail.com', {
         method: 'POST',
@@ -1299,7 +1300,8 @@ if (document.getElementById('feedback-form')) {
       const result = await response.json();
 
       if (!response.ok || (result.success !== true && result.success !== 'true')) {
-        throw new Error(result.message || 'The feedback service could not accept your submission.');
+        serviceErrorMessage = typeof result.message === 'string' ? result.message.trim() : '';
+        throw new Error(serviceErrorMessage || 'The feedback service could not accept your submission.');
       }
 
       feedbackForm.hidden = true;
@@ -1311,7 +1313,9 @@ if (document.getElementById('feedback-form')) {
     } catch (error) {
       console.error('Feedback submission failed:', error);
       if (feedbackError) {
-        feedbackError.textContent = 'Your feedback could not be sent. Please check your connection and try again.';
+        feedbackError.textContent = serviceErrorMessage
+          ? 'The feedback service rejected your submission: ' + serviceErrorMessage
+          : 'Your feedback could not be sent. Please check your connection and try again.';
         feedbackError.hidden = false;
       }
       if (submitButton) submitButton.disabled = false;
