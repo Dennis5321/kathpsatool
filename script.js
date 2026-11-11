@@ -1,19 +1,19 @@
 // KATH Patient Self-Assessment Tool Main JavaScript File
 
 const KATH_DIRECTORATES = {
-  anaesthesia: '💉 Anaesthesia & Intensive Care',
-  childHealth: '👶 Child Health',
-  laboratory: '🧬 Laboratory Services',
-  radiology: '🩻 Radiology',
-  emergencyMedicine: '🏥 Emergency Medicine',
-  eent: '👁️ Eye, Ear, Nose & Throat (EENT)',
-  familyMedicine: '👨‍👩‍👧 Family Medicine',
-  internalMedicine: '🩺 Internal Medicine',
-  obstetricsGynaecology: '🤱 Obstetrics & Gynaecology',
-  oncology: '🔬 Oncology',
-  oralHealth: '🦷 Oral Health',
-  surgery: '🦴 Surgery',
-  traumatologyOrthopaedics: '🦿 Traumatology & Orthopaedics'
+  anaesthesia: 'Anaesthesia & Intensive Care',
+  childHealth: 'Child Health',
+  laboratory: 'Laboratory Services',
+  radiology: 'Radiology',
+  emergencyMedicine: 'Emergency Medicine',
+  eent: 'Eye, Ear, Nose & Throat (EENT)',
+  familyMedicine: 'Family Medicine',
+  internalMedicine: 'Internal Medicine',
+  obstetricsGynaecology: 'Obstetrics & Gynaecology',
+  oncology: 'Oncology',
+  oralHealth: 'Oral Health',
+  surgery: 'Surgery',
+  traumatologyOrthopaedics: 'Traumatology & Orthopaedics'
 };
 
 const ASSESSMENT_STORAGE_KEYS = [
@@ -370,449 +370,7 @@ function initAboutDirectorates() {
 initAboutDirectorates();
 
 
-// SECTION A INTERACTIVE MEDICAL TOOLS ANIMATED BACKGROUND
 
-(function initMedicalBackground() {
-  const canvas = document.createElement('canvas');
-  canvas.id = 'bg-canvas';
-  document.body.insertBefore(canvas, document.body.firstChild);
-
-  const ctx = canvas.getContext('2d');
-
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let mouseActive = false;
-
-  // Track mouse coordinates for interactive parallax & deflection
-  window.addEventListener('mousemove', function (e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    mouseActive = true;
-  });
-
-  window.addEventListener('mouseleave', function () {
-    mouseActive = false;
-  });
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  // Available Medical Tool Shapes
-  const MEDICAL_TOOLS = [
-    'stethoscope',
-    'syringe',
-    'microscope',
-    'capsule',
-    'bandage',
-    'thermometer',
-    'cross',
-    'pulse'
-  ];
-
-  const PARTICLE_COUNT = 28;
-
-  function createParticle(atBottom) {
-    return {
-      x: Math.random() * window.innerWidth,
-      y: atBottom ? window.innerHeight + 50 : Math.random() * window.innerHeight,
-      size: Math.random() * 20 + 34,
-      speed: Math.random() * 0.45 + 0.25,
-      rotation: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.012,// Subtle rotation
-      baseOpacity: Math.random() * 0.15 + 0.15,
-      opacity: 0.22,
-      tool: MEDICAL_TOOLS[Math.floor(Math.random() * MEDICAL_TOOLS.length)],
-      floatOffset: Math.random() * Math.PI * 2,
-      depth: Math.random() * 0.6 + 0.4
-    };
-  }
-
-  const particles = Array.from({ length: PARTICLE_COUNT }, function () {
-    return createParticle(false);
-  });
-
-  // Medical Tool Drawing Functions
-
-  // 1. 🩺 Stethoscope
-  function drawStethoscope(size, color) {
-    const s = size * 0.5;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    // Binaural tubes (U shape top)
-    ctx.beginPath();
-    ctx.arc(-s * 0.35, -s * 0.45, s * 0.2, Math.PI, 0, false);
-    ctx.arc(s * 0.35, -s * 0.45, s * 0.2, Math.PI, 0, false);
-    ctx.stroke();
-
-    // Earpieces
-    ctx.beginPath();
-    ctx.arc(-s * 0.55, -s * 0.45, s * 0.09, 0, Math.PI * 2);
-    ctx.arc(s * 0.55, -s * 0.45, s * 0.09, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Flexible rubber tube loop
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.15, -s * 0.45);
-    ctx.bezierCurveTo(-s * 0.1, -s * 0.05, -s * 0.55, s * 0.35, -s * 0.1, s * 0.65);
-    ctx.bezierCurveTo(s * 0.35, s * 0.85, s * 0.55, s * 0.35, s * 0.2, s * 0.1);
-    ctx.lineTo(s * 0.15, -s * 0.45);
-    ctx.stroke();
-
-    // Chest piece / Bell & Diaphragm
-    ctx.beginPath();
-    ctx.arc(-s * 0.1, s * 0.65, s * 0.28, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(-s * 0.1, s * 0.65, s * 0.15, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffffff';
-    ctx.fill();
-  }
-
-  // 2. 💉 Syringe & Needle
-  function drawSyringe(size, color) {
-    const s = size * 0.5;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    // Barrel
-    const w = s * 0.42;
-    const h = s * 1.15;
-    ctx.strokeRect(-w / 2, -h / 2, w, h);
-
-    // Graduation measurement markings
-    for (let i = -3; i <= 3; i++) {
-      ctx.beginPath();
-      ctx.moveTo(-w / 2, (h * i) / 8);
-      ctx.lineTo(-w / 2 + (i % 2 === 0 ? w * 0.55 : w * 0.35), (h * i) / 8);
-      ctx.stroke();
-    }
-
-    // Plunger shaft & thumb flange
-    ctx.beginPath();
-    ctx.moveTo(0, -h / 2);
-    ctx.lineTo(0, -h / 2 - s * 0.45);
-    ctx.moveTo(-w * 0.75, -h / 2 - s * 0.45);
-    ctx.lineTo(w * 0.75, -h / 2 - s * 0.45);
-    ctx.stroke();
-
-    // Needle nozzle & thin bevel needle
-    ctx.beginPath();
-    ctx.moveTo(0, h / 2);
-    ctx.lineTo(0, h / 2 + s * 0.18);
-    ctx.stroke();
-
-    ctx.lineWidth = Math.max(1.5, size * 0.045);
-    ctx.beginPath();
-    ctx.moveTo(0, h / 2 + s * 0.18);
-    ctx.lineTo(0, h / 2 + s * 0.7);
-    ctx.stroke();
-  }
-
-  // 3. 🔬 Microscope
-  function drawMicroscope(size, color) {
-    const s = size * 0.5;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    // Eyepiece / Ocular tube (angled)
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.28, -s * 0.8);
-    ctx.lineTo(-s * 0.06, -s * 0.35);
-    ctx.stroke();
-
-    // Eyepiece cup
-    ctx.beginPath();
-    ctx.arc(-s * 0.3, -s * 0.85, s * 0.14, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Body tube & revolving nosepiece
-    ctx.strokeRect(-s * 0.18, -s * 0.35, s * 0.36, s * 0.42);
-
-    // Objective lens pointing to stage
-    ctx.beginPath();
-    ctx.moveTo(0, 0.07 * s);
-    ctx.lineTo(0, 0.28 * s);
-    ctx.stroke();
-
-    // Stage platform
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.45, 0.28 * s);
-    ctx.lineTo(s * 0.35, 0.28 * s);
-    ctx.stroke();
-
-    // Curved Arm
-    ctx.beginPath();
-    ctx.arc(s * 0.28, 0.22 * s, s * 0.48, -Math.PI * 0.5, Math.PI * 0.5, false);
-    ctx.stroke();
-
-    // Base stand
-    ctx.beginPath();
-    ctx.moveTo(-s * 0.55, 0.78 * s);
-    ctx.lineTo(s * 0.55, 0.78 * s);
-    ctx.stroke();
-  }
-
-  // 4. 💊 Medicine Capsule Pill
-  function drawCapsule(size, color) {
-    const s = size * 0.48;
-    const r = s * 0.42;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-
-    // Rounded capsule outline
-    ctx.beginPath();
-    ctx.arc(0, -s * 0.45, r, Math.PI, 0, false);
-    ctx.lineTo(r, s * 0.45);
-    ctx.arc(0, s * 0.45, r, 0, Math.PI, false);
-    ctx.closePath();
-    ctx.stroke();
-
-    // Fill top half
-    ctx.beginPath();
-    ctx.arc(0, -s * 0.45, r, Math.PI, 0, false);
-    ctx.lineTo(r, 0);
-    ctx.lineTo(-r, 0);
-    ctx.closePath();
-    ctx.fill();
-
-    // Middle division line
-    ctx.beginPath();
-    ctx.moveTo(-r, 0);
-    ctx.lineTo(r, 0);
-    ctx.stroke();
-  }
-
-  // 5. 🩹 Bandage / Plaster
-  function drawBandage(size, color) {
-    const s = size * 0.5;
-    const w = s * 1.25;
-    const h = s * 0.6;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-
-    // Rounded strip (with fallback for older canvas engines)
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-      ctx.roundRect(-w / 2, -h / 2, w, h, [h / 2]);
-    } else {
-      const r = h / 2;
-      const x = -w / 2;
-      const y = -h / 2;
-      ctx.moveTo(x + r, y);
-      ctx.lineTo(x + w - r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
-    }
-    ctx.stroke();
-
-    // Centre sterile pad
-    const padW = s * 0.48;
-    ctx.strokeRect(-padW / 2, -h / 2, padW, h);
-
-    // Ventilation dots
-    const dotR = Math.max(1.2, size * 0.035);
-    ctx.beginPath();
-    ctx.arc(-w * 0.32, 0, dotR, 0, Math.PI * 2);
-    ctx.arc(w * 0.32, 0, dotR, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // 6. 🌡️ Thermometer
-  function drawThermometer(size, color) {
-    const s = size * 0.5;
-    const stemW = s * 0.24;
-    const stemH = s * 1.15;
-    const bulbR = s * 0.28;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = Math.max(2, size * 0.075);
-
-    // Stem tube & top round dome
-    ctx.beginPath();
-    ctx.moveTo(-stemW / 2, s * 0.3);
-    ctx.lineTo(-stemW / 2, -stemH / 2);
-    ctx.arc(0, -stemH / 2, stemW / 2, Math.PI, 0, false);
-    ctx.lineTo(stemW / 2, s * 0.3);
-    ctx.stroke();
-
-    // Round bottom mercury reservoir bulb
-    ctx.beginPath();
-    ctx.arc(0, s * 0.48, bulbR, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Mercury column line inside stem
-    ctx.beginPath();
-    ctx.moveTo(0, s * 0.3);
-    ctx.lineTo(0, -s * 0.15);
-    ctx.lineWidth = Math.max(2.5, size * 0.095);
-    ctx.stroke();
-
-    // Tick marks on side
-    ctx.lineWidth = Math.max(1.2, size * 0.045);
-    for (let i = -2; i <= 1; i++) {
-      ctx.beginPath();
-      ctx.moveTo(stemW / 2, (s * i) / 3.5);
-      ctx.lineTo(stemW / 2 + s * 0.14, (s * i) / 3.5);
-      ctx.stroke();
-    }
-  }
-
-  // 7. ➕ Hospital Medical Cross
-  function drawCross(size, color) {
-    const arm = size * 0.48;
-    const thick = size * 0.18;
-    ctx.fillStyle = color;
-    ctx.fillRect(-thick / 2, -arm, thick, arm * 2);
-    ctx.fillRect(-arm, -thick / 2, arm * 2, thick);
-  }
-
-  // 8. 💓 Heartbeat / ECG Waveform
-  function drawPulse(size, color) {
-    const s = size * 0.65;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = Math.max(2.5, size * 0.09);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    ctx.beginPath();
-    ctx.moveTo(-s, 0);
-    ctx.lineTo(-s * 0.45, 0);
-    ctx.lineTo(-s * 0.25, -s * 0.75);
-    ctx.lineTo(0, s * 0.65);
-    ctx.lineTo(s * 0.2, -s * 0.28);
-    ctx.lineTo(s * 0.35, 0);
-    ctx.lineTo(s, 0);
-    ctx.stroke();
-  }
-
-  // Main Animation Loop
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const baseColor = '#d5101a';
-
-    // Optional subtle connecting lines between nearby floating tools
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const p1 = particles[i];
-        const p2 = particles[j];
-        const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-        if (dist < 130) {
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = baseColor;
-          ctx.globalAlpha = (1 - dist / 130) * 0.08;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-
-    particles.forEach(function (p) {
-      let drawX = p.x;
-      let drawY = p.y;
-      p.opacity = p.baseOpacity;
-
-      // Mouse interaction: repulsion and illumination
-      if (mouseActive) {
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const dist = Math.hypot(dx, dy);
-        const maxDist = 220;
-
-        if (dist < maxDist && dist > 0) {
-          const force = (1 - dist / maxDist) * 35 * p.depth;
-          drawX += (dx / dist) * force;
-          drawY += (dy / dist) * force;
-
-          // Subtle brightness/opacity increase near cursor (refined for less distraction)
-          p.opacity = Math.min(0.50, p.baseOpacity + (1 - dist / maxDist) * 0.28);
-        }
-
-        // Parallax offset relative to mouse (refined for subtlety)
-        const parallaxX = ((mouseX - window.innerWidth / 2) / window.innerWidth) * 18 * p.depth;
-        const parallaxY = ((mouseY - window.innerHeight / 2) / window.innerHeight) * 12 * p.depth;
-        drawX += parallaxX;
-        drawY += parallaxY;
-      }
-
-      // Continuous subtle floating wave
-      p.floatOffset += 0.018;
-      drawX += Math.sin(p.floatOffset) * 0.5;
-
-      // Save canvas state for transformation
-      ctx.save();
-      ctx.translate(drawX, drawY);
-      ctx.rotate(p.rotation);
-      ctx.globalAlpha = p.opacity;
-
-      // Draw corresponding medical tool
-      switch (p.tool) {
-        case 'stethoscope':
-          drawStethoscope(p.size, baseColor);
-          break;
-        case 'syringe':
-          drawSyringe(p.size, baseColor);
-          break;
-        case 'microscope':
-          drawMicroscope(p.size, baseColor);
-          break;
-        case 'capsule':
-          drawCapsule(p.size, baseColor);
-          break;
-        case 'bandage':
-          drawBandage(p.size, baseColor);
-          break;
-        case 'thermometer':
-          drawThermometer(p.size, baseColor);
-          break;
-        case 'pulse':
-          drawPulse(p.size, baseColor);
-          break;
-        case 'cross':
-        default:
-          drawCross(p.size, baseColor);
-          break;
-      }
-
-      ctx.restore();
-
-      // Move particle upward
-      p.y -= p.speed;
-      p.rotation += p.rotSpeed;
-
-      // If a particle drifts off the top of the screen, recycle it
-      if (p.y < -60) {
-        Object.assign(p, createParticle(true));
-      }
-    });
-
-    // Request the next animation frame (runs ~60 times per second)
-    requestAnimationFrame(animate);
-  }
-
-  // Kick off the animation
-  animate();
-})();
 
 
 // SECTION A5 DATE/TIME/WEATHER & WELCOME MODAL (All Pages)
@@ -1389,7 +947,7 @@ function initSymptomsPage() {
 
     let directorates;
     if (directorateSet.size === 0) {
-      directorates = ['🏨 General OPD Consultation'];
+      directorates = ['General OPD Consultation'];
     } else {
       directorates = Array.from(directorateSet);
     }
@@ -1447,53 +1005,53 @@ function initResultsPage() {
   // Friendly symptom labels
   // Map the short value strings back to human-readable text
   const symptomLabels = {
-    chest: '💔 Chest pain / Shortness of breath',
-    fever: '🌡️ Fever / Chills',
-    fatigue: '😴 Fatigue / Weakness',
-    dizziness: '🌀 Dizziness / Feeling faint',
-    weightloss: '⚖️ Unexplained weight loss',
-    appetite: '🍽️ Poor appetite / Loss of appetite',
-    pregnancy: '🤰 Pregnancy-related symptoms',
-    cough: '🤧 Cough',
-    sorethroat: '😷 Sore throat',
-    runnynose: '💨 Runny nose / Nasal congestion',
-    wheeze: '🫁 Wheezing / Breathing tightness',
-    abdominalpain: '🩺 Abdominal pain',
-    nausea: '🤢 Nausea / Vomiting',
-    diarrhea: '🚽 Diarrhea',
-    constipation: '🧻 Constipation',
-    heartburn: '🔥 Heartburn / Indigestion',
-    bloating: '🫃 Bloating / Stomach fullness',
-    headache: '🤕 Headache',
-    backpain: '📍 Back pain',
-    jointpain: '🦵 Joint pain',
-    musclepain: '💪 Muscle pain',
-    neckpain: '🩺 Neck pain',
-    fainting: '🧠 Fainting / Loss of consciousness',
-    numbness: '👣 Numbness / Tingling',
-    seizure: '⚡ Seizure / Fits',
-    balance: '🚶 Difficulty walking / Balance problems',
-    memory: '🧠 Memory problems / Confusion',
-    itching: '🩹 Itching / Skin irritation',
-    swelling: '💧 Swelling / Redness',
-    skin: '🌿 Skin rash / Allergic reaction',
-    lump: '🔍 Unusual lump / Swollen gland',
-    burnurine: '🚰 Burning when urinating',
-    frequenturine: '💧 Frequent urination',
-    bloodurine: '🩸 Blood in urine',
-    urinepain: '🧍 Lower abdominal pain when urinating',
-    eye: '👁️ Eye pain / Blurred vision',
-    redeye: '🔴 Red eye / Eye irritation',
-    earpain: '👂 Ear pain',
-    hearingloss: '🎧 Hearing loss / Ringing in the ears',
-    mental: '😔 Persistent sadness / Depression',
-    anxiety: '😟 Anxiety / Panic attacks',
-    sleep: '😴 Sleep problems',
-    stress: '🧘 Stress / Emotional distress',
-    injury: '🩹 Injury / Fracture / Open wound',
-    dental: '🦷 Toothache / Dental pain',
-    fracture: '🩹 Fracture',
-    openwound: '🩹 Open wound',
+    chest: 'Chest pain / Shortness of breath',
+    fever: 'Fever / Chills',
+    fatigue: 'Fatigue / Weakness',
+    dizziness: 'Dizziness / Feeling faint',
+    weightloss: 'Unexplained weight loss',
+    appetite: 'Poor appetite / Loss of appetite',
+    pregnancy: 'Pregnancy-related symptoms',
+    cough: 'Cough',
+    sorethroat: 'Sore throat',
+    runnynose: 'Runny nose / Nasal congestion',
+    wheeze: 'Wheezing / Breathing tightness',
+    abdominalpain: 'Abdominal pain',
+    nausea: 'Nausea / Vomiting',
+    diarrhea: 'Diarrhea',
+    constipation: 'Constipation',
+    heartburn: 'Heartburn / Indigestion',
+    bloating: 'Bloating / Stomach fullness',
+    headache: 'Headache',
+    backpain: 'Back pain',
+    jointpain: 'Joint pain',
+    musclepain: 'Muscle pain',
+    neckpain: 'Neck pain',
+    fainting: 'Fainting / Loss of consciousness',
+    numbness: 'Numbness / Tingling',
+    seizure: 'Seizure / Fits',
+    balance: 'Difficulty walking / Balance problems',
+    memory: 'Memory problems / Confusion',
+    itching: 'Itching / Skin irritation',
+    swelling: 'Swelling / Redness',
+    skin: 'Skin rash / Allergic reaction',
+    lump: 'Unusual lump / Swollen gland',
+    burnurine: 'Burning when urinating',
+    frequenturine: 'Frequent urination',
+    bloodurine: 'Blood in urine',
+    urinepain: 'Lower abdominal pain when urinating',
+    eye: 'Eye pain / Blurred vision',
+    redeye: 'Red eye / Eye irritation',
+    earpain: 'Ear pain',
+    hearingloss: 'Hearing loss / Ringing in the ears',
+    mental: 'Persistent sadness / Depression',
+    anxiety: 'Anxiety / Panic attacks',
+    sleep: 'Sleep problems',
+    stress: 'Stress / Emotional distress',
+    injury: 'Injury / Fracture / Open wound',
+    dental: 'Toothache / Dental pain',
+    fracture: 'Fracture',
+    openwound: 'Open wound',
   };
 
   // BMI category → note and CSS class
@@ -1527,7 +1085,7 @@ function initResultsPage() {
   const summaryHTML = `
     <div class="patient-summary">
       <div class="summary-item">
-        <div class="val">👤 ${patientTitle ? patientTitle + ' ' : ''}${patient.name.split(' ')[0]}</div>
+        <div class="val"> ${patientTitle ? patientTitle + ' ' : ''}${patient.name.split(' ')[0]}</div>
         <div class="lbl">Name</div>
       </div>
       <div class="summary-item">
@@ -1535,7 +1093,7 @@ function initResultsPage() {
         <div class="lbl">Age (years)</div>
       </div>
       <div class="summary-item">
-        <div class="val">${patient.gender === 'Male' ? '♂️' : '♀️'} ${patient.gender}</div>
+        <div class="val">${patient.gender}</div>
         <div class="lbl">Gender</div>
       </div>
       <div class="summary-item">
@@ -1550,17 +1108,17 @@ function initResultsPage() {
 
   // BMI result block
   const bmiHTML = patient.bmi ? `
-    <div class="result-label">📊 Body Mass Index (BMI) Result</div>
+    <div class="result-label"> Body Mass Index (BMI) Result</div>
     <div class="result-value">
       ${patient.bmi} kg/m²
       <span class="bmi-badge ${bmiMeta.cls}">${patient.category}</span>
     </div>
-    <p class="bmi-note">💡 ${bmiMeta.note}</p>` : `
-    <div class="result-label">📊 Body Mass Index (BMI) Result</div>
+    <p class="bmi-note"> ${bmiMeta.note}</p>` : `
+    <div class="result-label"> Body Mass Index (BMI) Result</div>
     <p style="color:var(--text-muted);font-size:.9rem;">BMI was skipped. You can calculate it from the BMI page at any time.</p>`;
 
   // Symptoms list (or "None selected")
-  let symptomsHTML = '<div class="result-label">🩺 Reported Symptoms</div>';
+  let symptomsHTML = '<div class="result-label"> Reported Symptoms</div>';
   if (symptoms.length === 0) {
     symptomsHTML += '<p style="color:var(--text-muted);font-size:.9rem;">No symptoms selected.</p>';
   } else {
@@ -1575,10 +1133,10 @@ function initResultsPage() {
   // Directorates / recommended starting point
   const recommendationItems = (recommendation.recommendations && recommendation.recommendations.length)
     ? recommendation.recommendations
-    : [{ directorate: '🏨 General OPD Consultation', reason: 'Please select at least one symptom to generate a more specific starting-point recommendation.', symptoms: [] }];
+    : [{ directorate: ' General OPD Consultation', reason: 'Please select at least one symptom to generate a more specific starting-point recommendation.', symptoms: [] }];
 
   let recommendationHTML = `
-    <div class="result-label">🩺 Recommended Starting Point</div>
+    <div class="result-label"> Recommended Starting Point</div>
     <p style="color:var(--text-mid);font-size:.92rem;line-height:1.6;margin:0.35rem 0 1rem;">
       Based on the symptoms you selected, you may consider starting at:
     </p>
@@ -1595,7 +1153,7 @@ function initResultsPage() {
 
   recommendationHTML += '</div>';
 
-  let dirHTML = '<div class="result-label">🏥 Suggested Directorate(s) to Visit</div>';
+  let dirHTML = '<div class="result-label"> Suggested Directorate(s) to Visit</div>';
   dirHTML += '<div class="directorate-list">';
   directorates.forEach(function (d) {
     dirHTML += `<div class="directorate-tag">${d}</div>`;
@@ -1610,16 +1168,16 @@ function initResultsPage() {
   // Show the results.
   container.innerHTML = `
     <div class="card">
-      <div class="card-title">👤 Patient Information Summary</div>
+      <div class="card-title"> Patient Information Summary</div>
       ${summaryHTML}
     </div>
     <div class="grid-2col">
       <div class="card">
-        <div class="card-title">⚖️ Body Mass Index (BMI) Assessment</div>
+        <div class="card-title"> Body Mass Index (BMI) Assessment</div>
         ${bmiHTML}
       </div>
       <div class="card">
-        <div class="card-title">🩻 Clinical Routing &amp; Directorate Guidance</div>
+        <div class="card-title"> Clinical Routing &amp; Directorate Guidance</div>
         ${symptomsHTML}
         <hr class="divider">
         ${recommendationHTML}
