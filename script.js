@@ -1247,19 +1247,10 @@ if (document.getElementById('feedback-form')) {
   const feedbackForm = document.getElementById('feedback-form');
   const patientNameInput = document.getElementById('patient-name');
 
-  feedbackForm.addEventListener('submit', function (event) {
+  feedbackForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const patientName = patientNameInput ? patientNameInput.value.trim() : '';
-    const visitorType = document.getElementById('visitor-type')
-      ? document.getElementById('visitor-type').value || 'Not specified'
-      : 'Not specified';
-    const liked = document.getElementById('liked') ? document.getElementById('liked').value.trim() : '';
-    const suggestions = document.getElementById('suggestions') ? document.getElementById('suggestions').value.trim() : '';
-    const comments = document.getElementById('comments') ? document.getElementById('comments').value.trim() : '';
-    const recommendInput = document.querySelector('input[name="recommend"]:checked');
-    const recommend = recommendInput ? recommendInput.value : 'Not answered';
-
     if (!patientName) {
       alert('Please enter your name before submitting.');
       return;
@@ -1271,7 +1262,16 @@ if (document.getElementById('feedback-form')) {
       return;
     }
 
-    const submittedAt = new Date().toLocaleString('en-GB', {
+    if (!feedbackForm.reportValidity()) {
+      return;
+    }
+
+    const feedbackError = document.getElementById('feedback-error');
+    const submitButton = feedbackForm.querySelector('button[type="submit"]');
+    const formData = new FormData(feedbackForm);
+    const payload = Object.fromEntries(formData.entries());
+    payload.rating = selectedRating + '/5';
+    payload.submittedAt = new Date().toLocaleString('en-GB', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -1281,36 +1281,40 @@ if (document.getElementById('feedback-form')) {
       hour12: false
     });
 
-    const emailBody = [
-      'Patient Name: ' + patientName,
-      'Visitor Type: ' + visitorType,
-      'Rating: ' + selectedRating + '/5',
-      '',
-      'What did you like about this tool?',
-      liked || 'No response',
-      '',
-      'Any suggestions for improvement?',
-      suggestions || 'No response',
-      '',
-      'Comments about KATH services?',
-      comments || 'No response',
-      '',
-      'Would you recommend this tool to others?',
-      recommend,
-      '',
-      'Submission Date/Time: ' + submittedAt
-    ].join('\n');
+    if (feedbackError) {
+      feedbackError.hidden = true;
+      feedbackError.textContent = '';
+    }
+    if (submitButton) submitButton.disabled = true;
 
-    const mailtoLink = 'mailto:boatengdennis30@gmail.com' +
-      '?subject=' + encodeURIComponent('New Patient Feedback – KATH Self-Assessment.') +
-      '&body=' + encodeURIComponent(emailBody);
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/boatengdennis30@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
 
-    window.location.href = mailtoLink;
+      if (!response.ok || (result.success !== true && result.success !== 'true')) {
+        throw new Error(result.message || 'The feedback service could not accept your submission.');
+      }
 
-    feedbackForm.style.display = 'none';
-    const successBox = document.getElementById('feedback-success');
-    if (successBox) successBox.style.display = 'block';
-
-    if (successBox) successBox.scrollIntoView({ behavior: 'smooth' });
+      feedbackForm.hidden = true;
+      const successBox = document.getElementById('feedback-success');
+      if (successBox) {
+        successBox.style.display = 'block';
+        successBox.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.error('Feedback submission failed:', error);
+      if (feedbackError) {
+        feedbackError.textContent = 'Your feedback could not be sent. Please check your connection and try again.';
+        feedbackError.hidden = false;
+      }
+      if (submitButton) submitButton.disabled = false;
+    }
   });
 }

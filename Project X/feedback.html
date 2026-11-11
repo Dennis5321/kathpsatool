@@ -143,11 +143,11 @@
             Please take a moment to rate your experience and provide any recommendations.
           </p>
 
-          <!-- Success message (hidden until form submitted) -->
+          <!-- Success message shown after the feedback service accepts a submission -->
           <div class="feedback-success" id="feedback-success">
-            <h3>Thank You for Your Feedback!</h3>
+            <h3>Thank You for Your Feedback</h3>
             <p>
-              Your response has been recorded. We appreciate your time and will use your
+              Your feedback has been submitted. We appreciate your time and will use your
               input to make this tool better for all KATH patients.
             </p>
             <a href="index.html" class="btn btn-primary mt-2"> Back to Home</a>
@@ -155,6 +155,8 @@
 
           <!-- The actual feedback form -->
           <form id="feedback-form" novalidate>
+            <input type="hidden" name="_subject" value="New patient feedback — KATH Self-Assessment Tool" />
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
 
             <!-- Visitor type -->
             <div class="form-group">
@@ -258,8 +260,10 @@
 
             <!-- Privacy note -->
             <p style="font-size:.82rem;color:var(--text-muted);background:#fffafa;padding:.8rem 1rem;border-radius:var(--radius-sm);margin-bottom:1.2rem;border:1.5px solid var(--border);">
-               <strong>Privacy notice:</strong> No personal medical records or identifiable information are stored. Feedback is completely anonymous.
+               <strong>Privacy notice:</strong> Your name and feedback are sent to the KATH feedback inbox through FormSubmit. Do not include sensitive medical information.
             </p>
+
+            <p id="feedback-error" class="alert alert-error" role="alert" hidden></p>
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary btn-block btn-lg">
